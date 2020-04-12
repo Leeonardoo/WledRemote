@@ -1,4 +1,4 @@
-package br.com.leonardo.wledremote.ui.viewmodel
+package br.com.leonardo.wledremote.ui.fragment.viewmodel
 
 import android.app.Application
 import android.graphics.Color
@@ -10,7 +10,8 @@ import br.com.leonardo.wledremote.model.Segment
 import br.com.leonardo.wledremote.model.State
 import br.com.leonardo.wledremote.rest.api.RetrofitConn
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DashboardFragmentViewModel(application: Application) : AndroidViewModel(application) {
@@ -28,10 +29,19 @@ class DashboardFragmentViewModel(application: Application) : AndroidViewModel(ap
             }
         }
 
-        val colors = State(segment = arrayOf(Segment(colors = arrayOf(rgbColor))))
+        val state = State(segment = arrayOf(Segment(colors = arrayOf(rgbColor))))
 
-        GlobalScope.launch {
-            RetrofitConn.getInstance().wledEndpoint().setColors(colors)
+        CoroutineScope(Dispatchers.IO).launch {
+            RetrofitConn.getInstance().wledEndpoint().setState(state)
+
+        }
+    }
+
+    fun setBrightness(brightness: Int) {
+        val state = State(brightness = brightness)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            RetrofitConn.getInstance().wledEndpoint().setState(state)
 
         }
     }

@@ -7,14 +7,14 @@
 
         <variable
             name="mainActivity"
-            type="br.com.leonardo.wledremote.ui.viewmodel.MainActivityViewModel" />
+            type="br.com.leonardo.wledremote.ui.activity.viewmodel.MainActivityViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.MainActivity">
+        tools:context=".ui.activity.MainActivity">
 
         <fragment
             android:id="@+id/nav_host_fragment"

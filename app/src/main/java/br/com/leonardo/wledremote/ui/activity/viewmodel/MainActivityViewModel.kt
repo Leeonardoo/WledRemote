@@ -1,4 +1,4 @@
-package br.com.leonardo.wledremote.ui.viewmodel
+package br.com.leonardo.wledremote.ui.activity.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

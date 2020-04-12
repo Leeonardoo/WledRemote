@@ -1,4 +1,4 @@
-package br.com.leonardo.wledremote.ui
+package br.com.leonardo.wledremote.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.ActivityMainBinding
-import br.com.leonardo.wledremote.ui.viewmodel.MainActivityViewModel
+import br.com.leonardo.wledremote.ui.activity.viewmodel.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
 

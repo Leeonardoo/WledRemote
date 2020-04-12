@@ -1,11 +1,11 @@
-package br.com.leonardo.wledremote.ui
+package br.com.leonardo.wledremote.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import br.com.leonardo.wledremote.R
-import br.com.leonardo.wledremote.ui.viewmodel.SetupActivityViewModel
+import br.com.leonardo.wledremote.ui.activity.viewmodel.SetupActivityViewModel
 import kotlinx.android.synthetic.main.activity_setup.*
 
 class SetupActivity : AppCompatActivity() {

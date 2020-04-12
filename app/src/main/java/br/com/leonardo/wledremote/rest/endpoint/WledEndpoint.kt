@@ -8,6 +8,6 @@ import retrofit2.http.POST
 interface WledEndpoint {
 
     @POST("/json/state")
-    suspend fun setColors(@Body state: State): JsonResponse
+    suspend fun setState(@Body state: State): JsonResponse
 
 }

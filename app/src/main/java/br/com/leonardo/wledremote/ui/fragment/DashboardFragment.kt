@@ -1,4 +1,4 @@
-package br.com.leonardo.wledremote.ui
+package br.com.leonardo.wledremote.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.FragmentDashboardBinding
-import br.com.leonardo.wledremote.ui.viewmodel.DashboardFragmentViewModel
+import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardFragmentViewModel
 import com.airbnb.lottie.LottieCompositionFactory
+import com.google.android.material.slider.Slider
 
 
 class DashboardFragment : Fragment() {
@@ -42,20 +43,20 @@ class DashboardFragment : Fragment() {
             }
         }
 
-        binding.dashboardFragmentPicker.subscribe { color, fromUser, shouldPropagate ->
+        binding.dashboardFragmentPicker.subscribe { color, fromUser, _ ->
             if (fromUser) {
                 binding.dashViewmodel!!.setColor(color)
             }
         }
-    }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DashboardFragment().apply {
-                arguments = Bundle().apply {
+        binding.brightnessSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
 
-                }
+            override fun onStartTrackingTouch(slider: Slider) {}
+
+            override fun onStopTrackingTouch(slider: Slider) {
+                viewModel.setBrightness(slider.value.toInt())
             }
+        }
+        )
     }
 }

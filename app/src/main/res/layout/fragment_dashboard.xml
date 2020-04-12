@@ -7,14 +7,14 @@
 
         <variable
             name="dashViewmodel"
-            type="br.com.leonardo.wledremote.ui.viewmodel.DashboardFragmentViewModel" />
+            type="br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardFragmentViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.DashboardFragment">
+        tools:context=".ui.fragment.DashboardFragment">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
