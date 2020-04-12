@@ -1,0 +1,2 @@
+rootProject.name='Wled Remote'
+include ':app'

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/anonymous_pro</item>
+        <item>@font/anonymous_pro_bold</item>
+        <item>@font/inconsolata</item>
+        <item>@font/inconsolata_bold</item>
+        <item>@font/pt_mono</item>
+        <item>@font/space_mono</item>
+        <item>@font/space_mono_bold</item>
+    </array>
+</resources>
