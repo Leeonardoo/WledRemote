@@ -4,4 +4,4 @@ import java.io.Serializable
 
 data class Effects(
     var effects: List<String>
-) : Serializable
+)

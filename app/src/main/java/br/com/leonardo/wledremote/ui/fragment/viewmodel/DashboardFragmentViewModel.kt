@@ -19,17 +19,13 @@ class DashboardFragmentViewModel(application: Application) : AndroidViewModel(ap
 
     fun setColor(color: Int) {
         val hexColor = String.format("#%06X", (0xFFFFFF and color))
-        val rgbColor = IntArray(3)
+        val rgbColor = mutableListOf(
+            Color.parseColor(hexColor).red,
+            Color.parseColor(hexColor).green,
+            Color.parseColor(hexColor).blue
+        )
 
-        for (i in rgbColor.indices) {
-            when (i) {
-                0 -> rgbColor[i] = Color.parseColor(hexColor).red
-                1 -> rgbColor[i] = Color.parseColor(hexColor).green
-                2 -> rgbColor[i] = Color.parseColor(hexColor).blue
-            }
-        }
-
-        val state = State(segment = arrayOf(Segment(colors = arrayOf(rgbColor))))
+        val state = State(segment = listOf(Segment(colors = listOf(rgbColor))))
 
         CoroutineScope(Dispatchers.IO).launch {
             RetrofitConn.getInstance().wledEndpoint().setState(state)
