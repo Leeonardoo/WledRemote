@@ -16,8 +16,8 @@ class SetupActivity : AppCompatActivity() {
 
         val viewModel = ViewModelProvider(this).get(SetupActivityViewModel::class.java)
 
-        connectButton.setOnClickListener {
-            viewModel.sharedPrefsUtil.setConfigIP(ip = ipText.text.toString())
+        connect_button.setOnClickListener {
+            viewModel.sharedPrefsUtil.setConfigIP(ip = ip_text.text.toString())
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
