@@ -53,12 +53,12 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="56dp"
             app:defaultNavHost="true"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            app:navGraph="@navigation/navigation_graph" />
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="match_parent"
+            android:id="@+id/bottom_nav"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:menu="@menu/bottom_nav_menu" />
