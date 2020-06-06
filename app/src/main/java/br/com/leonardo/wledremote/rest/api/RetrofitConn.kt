@@ -1,6 +1,7 @@
 package br.com.leonardo.wledremote.rest.api
 
-import br.com.leonardo.wledremote.rest.endpoint.WledEndpoint
+import br.com.leonardo.wledremote.rest.endpoint.InfoEndpoint
+import br.com.leonardo.wledremote.rest.endpoint.StateEndpoint
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -13,7 +14,7 @@ class RetrofitConn {
 
     private var retrofit: Retrofit
     private var httpClient: OkHttpClient
-    private val URL_BASE = "http://192.168.1.112"
+    private val URL_BASE = "http://192.168.1.111"
     private val servicesPool: MutableMap<String, Any?> = HashMap()
 
     init {
@@ -46,8 +47,12 @@ class RetrofitConn {
         return servicesPool[key]
     }
 
-    fun wledEndpoint(): WledEndpoint {
-        return create(WledEndpoint::class.java) as WledEndpoint
+    fun infoEndpoint(): InfoEndpoint {
+        return create(InfoEndpoint::class.java) as InfoEndpoint
+    }
+
+    fun stateEndpoint(): StateEndpoint {
+        return create(StateEndpoint::class.java) as StateEndpoint
     }
 
     companion object {
