@@ -18,8 +18,7 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="16dp">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -57,7 +56,6 @@
 
                         <TextView
                             android:id="@+id/statusText"
-                            style="@style/TextAppearance.MaterialComponents.Headline5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
@@ -66,7 +64,7 @@
                             android:fontFamily="@font/manrope_bold"
                             android:maxLines="1"
                             android:text="Connecting..."
-                            android:textSize="21sp"
+                            android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toEndOf="@id/statusAnimationView"
@@ -76,7 +74,6 @@
 
                         <TextView
                             android:id="@+id/currentStatus"
-                            style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
@@ -109,13 +106,13 @@
 
                         <TextView
                             android:id="@+id/textViewColors"
-                            style="@style/TextAppearance.MaterialComponents.Headline5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="16dp"
                             android:layout_marginTop="16dp"
+                            android:fontFamily="@font/manrope_bold"
                             android:text="Selected color"
-                            android:textSize="21sp"
+                            android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
@@ -152,13 +149,13 @@
 
                         <TextView
                             android:id="@+id/textBrightness"
-                            style="@style/TextAppearance.MaterialComponents.Headline5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="16dp"
                             android:layout_marginTop="16dp"
+                            android:fontFamily="@font/manrope_bold"
                             android:text="Brightness"
-                            android:textSize="21sp"
+                            android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
@@ -197,13 +194,13 @@
 
                         <TextView
                             android:id="@+id/textPallete"
-                            style="@style/TextAppearance.MaterialComponents.Headline5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="16dp"
                             android:layout_marginTop="16dp"
+                            android:fontFamily="@font/manrope_bold"
                             android:text="Pallete"
-                            android:textSize="21sp"
+                            android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"

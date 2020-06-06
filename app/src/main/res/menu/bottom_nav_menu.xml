@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_nav_dashboard"
+        android:icon="@drawable/dashboard_white_24dp"
+        android:title="Dashboard" />
+
+    <item
+        android:id="@+id/bottom_nav_settings"
+        android:icon="@drawable/settings_white_24dp"
+        android:title="Settings" />
+
+</menu>

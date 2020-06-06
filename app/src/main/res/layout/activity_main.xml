@@ -16,77 +16,52 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.MainActivity">
 
-        <fragment
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$Behavior">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                style="@style/Widget.MaterialComponents.Toolbar.Surface"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
+                    android:fontFamily="@font/manrope_bold"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="Dashboard"
+                    android:textAlignment="center"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="18sp" />
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- The 56dp marginBottom is equalsto the BottomNav height -->
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="56dp"
             app:defaultNavHost="true"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             app:navGraph="@navigation/navigation_graph" />
 
 
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bar"
+        <com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:backgroundTint="@color/primaryColor"
-            app:fabAlignmentMode="center"
-            app:fabAnimationMode="scale"
-            app:fabCradleMargin="8dp"
-            app:fabCradleRoundedCornerRadius="32dp"
-            app:hideOnScroll="true"
-            app:menu="@menu/appbar_main_menu">
-
-            <LinearLayout
-                android:id="@+id/bottom_app_bar_content_container"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginVertical="8dp"
-                android:background="@drawable/ripple_foreground_toolbar"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="4dp">
-
-                <ImageView
-                    android:id="@+id/bottom_app_bar_chevron"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/ic_arrow_drop_up_black_24dp"
-                    app:tint="?attr/colorOnPrimarySurface" />
-
-                <ImageView
-                    android:id="@+id/bottom_app_bar_logo"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="4dp"
-                    app:srcCompat="@drawable/ic_star_black_24dp"
-                    app:tint="?attr/colorOnPrimarySurface" />
-
-                <TextView
-                    android:id="@+id/bottom_app_bar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginHorizontal="4dp"
-                    android:text="More"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    android:textColor="@android:color/white"
-                    app:tint="?attr/colorOnPrimarySurface" />
-            </LinearLayout>
-
-        </com.google.android.material.bottomappbar.BottomAppBar>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/secondaryColor"
-            app:layout_anchor="@id/bar"></com.google.android.material.floatingactionbutton.FloatingActionButton>
+            app:menu="@menu/bottom_nav_menu" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
