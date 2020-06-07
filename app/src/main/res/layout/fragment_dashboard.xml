@@ -97,6 +97,7 @@
                     android:layout_gravity="bottom"
                     android:layout_margin="8dp"
                     app:cardElevation="0dp"
+                    android:id="@+id/color_picker_container"
                     app:strokeColor="@color/stroke_color"
                     app:strokeWidth="1dp">
 
@@ -118,7 +119,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <top.defaults.colorpicker.ColorPickerView
+<!--                        <top.defaults.colorpicker.ColorPickerView
                             android:id="@+id/dashboard_fragment_picker"
                             android:layout_width="250dp"
                             android:layout_height="250dp"
@@ -130,8 +131,10 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/textViewColors">
 
-                        </top.defaults.colorpicker.ColorPickerView>
+                        </top.defaults.colorpicker.ColorPickerView> -->
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView

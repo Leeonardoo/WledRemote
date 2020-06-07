@@ -11,6 +11,8 @@ import br.com.leonardo.wledremote.databinding.FragmentDashboardBinding
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardFragmentViewModel
 import com.airbnb.lottie.LottieCompositionFactory
 import com.google.android.material.slider.Slider
+import com.skydoves.colorpickerview.ColorPickerDialog
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 
 
 class DashboardFragment : Fragment() {
@@ -43,10 +45,19 @@ class DashboardFragment : Fragment() {
             }
         }
 
-        binding.dashboardFragmentPicker.subscribe { color, fromUser, _ ->
-            if (fromUser) {
-                binding.dashViewmodel!!.setColor(color)
-            }
+        binding.colorPickerContainer.setOnClickListener {
+            ColorPickerDialog.Builder(
+                requireContext(), R.style.Theme_MaterialComponents_Light_Dialog_Alert
+            )
+                .setTitle("ColorPicker Dialog")
+                .setPositiveButton(getString(R.string.ok),
+                    ColorEnvelopeListener { envelope, fromUser ->
+                        //do something
+                    })
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
+                .attachAlphaSlideBar(false)
+                .attachBrightnessSlideBar(false)
+                .show()
         }
 
         binding.brightnessSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Wled Remote</string>
+
+    <!-- Dashboard -->
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 </resources>
