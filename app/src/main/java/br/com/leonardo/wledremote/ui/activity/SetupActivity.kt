@@ -19,12 +19,12 @@ class SetupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
-        super.onCreate(savedInstanceState)
+
         if (viewModel.isSetup())
             startActivity(Intent(this, MainActivity::class.java))
 
+        super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_setup)
-
         sharedPrefsUtil = SharedPrefsUtil.getInstance(this)
 
         binding.connectButton.setOnClickListener {
