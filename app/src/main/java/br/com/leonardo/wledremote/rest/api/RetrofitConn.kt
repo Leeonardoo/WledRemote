@@ -5,11 +5,11 @@ import br.com.leonardo.wledremote.rest.endpoint.StateEndpoint
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+//TODO migrate to Moshi
 class RetrofitConn {
 
     private var retrofit: Retrofit
@@ -34,7 +34,6 @@ class RetrofitConn {
         retrofit = Retrofit.Builder()
             .baseUrl(URL_BASE)
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(httpClient)
             .build()
     }
@@ -64,5 +63,4 @@ class RetrofitConn {
                 INSTANCE ?: RetrofitConn()
             }
     }
-
 }
