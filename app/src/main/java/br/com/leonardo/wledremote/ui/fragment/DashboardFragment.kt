@@ -14,7 +14,6 @@ import com.google.android.material.slider.Slider
 import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 
-
 class DashboardFragment : Fragment() {
     lateinit var binding: FragmentDashboardBinding
     private val viewModel: DashboardFragmentViewModel by viewModels()
