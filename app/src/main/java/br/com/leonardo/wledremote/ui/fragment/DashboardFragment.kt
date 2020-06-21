@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.FragmentDashboardBinding
+import br.com.leonardo.wledremote.ui.activity.viewmodel.MainActivityViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardFragmentViewModel
 import com.airbnb.lottie.LottieCompositionFactory
 import com.google.android.material.slider.Slider
@@ -17,6 +19,7 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 class DashboardFragment : Fragment() {
     lateinit var binding: FragmentDashboardBinding
     private val viewModel: DashboardFragmentViewModel by viewModels()
+    private val mainViewModel: MainActivityViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +48,7 @@ class DashboardFragment : Fragment() {
                 setTitle(getString(R.string.select_color))
                 setPositiveButton(getString(R.string.ok),
                     ColorEnvelopeListener { envelope, fromUser ->
-                        if (fromUser) viewModel.setColor(envelope.color)
+                        if (fromUser) mainViewModel.setColor(envelope.color)
                     })
                 setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
                 attachAlphaSlideBar(false)
@@ -56,7 +59,7 @@ class DashboardFragment : Fragment() {
         binding.brightnessSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: Slider) {}
             override fun onStopTrackingTouch(slider: Slider) {
-                viewModel.setBrightness(slider.value.toInt())
+                mainViewModel.setBrightness(slider.value.toInt())
             }
         }
         )

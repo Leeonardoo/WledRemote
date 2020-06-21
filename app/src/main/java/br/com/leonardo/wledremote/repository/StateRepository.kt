@@ -54,6 +54,7 @@ class StateRepository {
                 is ResultWrapper.Success -> {
                     Log.d("StateRepository", "State sent successfully!")
                     _sendStateStatus.postValue(StateStatus.Success(response.value))
+                    getState()
                 }
             }
         }
@@ -61,7 +62,7 @@ class StateRepository {
 
     suspend fun getState() {
         withContext(Dispatchers.IO) {
-            _sendStateStatus.postValue(StateStatus.Loading)
+            _stateResponseStatus.postValue(StateStatus.Loading)
 
             val response = apiHandler.handle(this) {
                 RetrofitConn.getInstance().stateEndpoint().getState()
