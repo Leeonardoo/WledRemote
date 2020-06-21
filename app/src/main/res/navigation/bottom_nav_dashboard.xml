@@ -8,6 +8,6 @@
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="br.com.leonardo.wledremote.ui.fragment.DashboardFragment"
-        android:label="fragment_dashboard"
+        android:label="@string/dashboard_label"
         tools:layout="@layout/fragment_dashboard" />
 </navigation>

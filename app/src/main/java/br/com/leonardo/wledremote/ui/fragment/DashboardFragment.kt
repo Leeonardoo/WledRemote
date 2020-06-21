@@ -22,7 +22,6 @@ class DashboardFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentDashboardBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -32,10 +31,7 @@ class DashboardFragment : Fragment() {
         binding.dashViewmodel = viewModel
         binding.statusAnimationView.addAnimatorUpdateListener {
             if (binding.statusAnimationView.frame == 159) {
-                LottieCompositionFactory.fromRawRes(
-                    context,
-                    R.raw.check
-                ).addListener {
+                LottieCompositionFactory.fromRawRes(context, R.raw.check).addListener {
                     binding.statusAnimationView.setComposition(it)
                     binding.statusAnimationView.playAnimation()
                     binding.currentStatus.text = "Connected to: 192.168.1.250"
@@ -45,24 +41,20 @@ class DashboardFragment : Fragment() {
         }
 
         binding.colorPickerContainer.setOnClickListener {
-            ColorPickerDialog.Builder(
-                requireContext(), R.style.Theme_MaterialComponents_Light_Dialog_Alert
-            )
-                .setTitle("ColorPicker Dialog")
-                .setPositiveButton(getString(R.string.ok),
+            ColorPickerDialog.Builder(requireContext(), R.style.RoundedColorDialog).apply {
+                setTitle(getString(R.string.select_color))
+                setPositiveButton(getString(R.string.ok),
                     ColorEnvelopeListener { envelope, fromUser ->
-                        //do something
+                        if (fromUser) viewModel.setColor(envelope.color)
                     })
-                .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
-                .attachAlphaSlideBar(false)
-                .attachBrightnessSlideBar(false)
-                .show()
+                setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
+                attachAlphaSlideBar(false)
+                attachBrightnessSlideBar(false)
+            }.show()
         }
 
         binding.brightnessSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-
             override fun onStartTrackingTouch(slider: Slider) {}
-
             override fun onStopTrackingTouch(slider: Slider) {
                 viewModel.setBrightness(slider.value.toInt())
             }

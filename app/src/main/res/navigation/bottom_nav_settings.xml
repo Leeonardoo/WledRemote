@@ -8,6 +8,6 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="br.com.leonardo.wledremote.ui.fragment.SettingsFragment"
-        android:label="fragment_settings"
+        android:label="@string/settings_label"
         tools:layout="@layout/fragment_settings" />
 </navigation>

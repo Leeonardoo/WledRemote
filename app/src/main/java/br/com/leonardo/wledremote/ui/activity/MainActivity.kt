@@ -7,8 +7,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
-import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
-import androidx.navigation.ui.setupActionBarWithNavController
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.ActivityMainBinding
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainActivityViewModel

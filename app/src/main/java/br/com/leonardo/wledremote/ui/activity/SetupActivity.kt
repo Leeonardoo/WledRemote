@@ -9,28 +9,27 @@ import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.ActivitySetupBinding
 import br.com.leonardo.wledremote.ui.activity.viewmodel.SetupActivityViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
-import kotlinx.android.synthetic.main.activity_setup.*
 
 class SetupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySetupBinding
     private val viewModel: SetupActivityViewModel by viewModels()
-    private lateinit var sharedPrefsUtil: SharedPrefsUtil
+    private lateinit var sharedPrefs: SharedPrefsUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        sharedPrefs = SharedPrefsUtil.getInstance(this)
+        super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
 
-        if (viewModel.isSetup())
+        if (sharedPrefs.isIPConfigured())
             startActivity(Intent(this, MainActivity::class.java))
-
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_setup)
-        sharedPrefsUtil = SharedPrefsUtil.getInstance(this)
-
-        binding.connectButton.setOnClickListener {
-            sharedPrefsUtil.setConfigIP(ip = binding.ipText.text.toString())
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+        else {
+            binding = DataBindingUtil.setContentView(this, R.layout.activity_setup)
+            binding.connectButton.setOnClickListener {
+                sharedPrefs.setConfigIP(ip = binding.ipText.text.toString())
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 }

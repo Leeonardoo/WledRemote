@@ -9,6 +9,23 @@
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/secondaryColor</item>
         <item name="android:statusBarColor">@android:color/darker_gray</item>
+        <item name="fontFamily">@font/manrope_medium</item>
+    </style>
+
+    <style name="RoundedAlertDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/DialogCorners</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="dialogCornerRadius">12dp</item>
+    </style>
+
+    <style name="RoundedColorDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="dialogCornerRadius">12dp</item>
+        <item name="fontFamily">@font/manrope_semibold</item>
+    </style>
+
+    <style name="DialogCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
     </style>
 
 </resources>

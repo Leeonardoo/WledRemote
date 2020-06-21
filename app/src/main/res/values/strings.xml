@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">Wled Remote</string>
 
+    <!-- Fragment Labels -->
+    <string name="dashboard_label">Dashboard</string>
+    <string name="settings_label">Settings</string>
+
+
     <!-- Dashboard -->
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
+    <string name="select_color">Choose a new color</string>
 </resources>

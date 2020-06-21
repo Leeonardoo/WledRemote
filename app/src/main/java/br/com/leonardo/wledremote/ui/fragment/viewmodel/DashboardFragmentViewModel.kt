@@ -1,13 +1,13 @@
 package br.com.leonardo.wledremote.ui.fragment.viewmodel
 
 import android.app.Application
-import android.graphics.Color
 import androidx.core.graphics.blue
 import androidx.core.graphics.green
 import androidx.core.graphics.red
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.leonardo.wledremote.repository.StateRepository
+import br.com.leonardo.wledremote.rest.request.state.Segment
 import br.com.leonardo.wledremote.rest.request.state.StateRequest
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
 import kotlinx.coroutines.Dispatchers
@@ -18,20 +18,20 @@ class DashboardFragmentViewModel(application: Application) : AndroidViewModel(ap
     private val sharedPrefsUtil = SharedPrefsUtil.getInstance(application)
     private val stateRepository = StateRepository()
 
-    fun setColor(color: Int) {
-        val hexColor = String.format("#%06X", (0xFFFFFF and color))
+    fun setColor(colorArray: Int) {
         val rgbColor = mutableListOf(
-            Color.parseColor(hexColor).red,
-            Color.parseColor(hexColor).green,
-            Color.parseColor(hexColor).blue
+            colorArray.red,
+            colorArray.green,
+            colorArray.blue
         )
+        //Hardcoded for the first one for now
+        val state = StateRequest(segments = listOf(Segment(colors = listOf(rgbColor))))
 
-        /*val state = State(segment = listOf(Segment(colors = listOf(rgbColor))))
-
-        CoroutineScope(Dispatchers.IO).launch {
-            RetrofitConn.getInstance().wledEndpoint().setState(state)
-
-        }*/
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                stateRepository.sendState(state)
+            }
+        }
     }
 
     fun setBrightness(brightness: Int) {
