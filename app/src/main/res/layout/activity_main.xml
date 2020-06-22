@@ -7,7 +7,7 @@
 
         <variable
             name="mainActivity"
-            type="br.com.leonardo.wledremote.ui.activity.viewmodel.MainActivityViewModel" />
+            type="br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -47,7 +47,7 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- The 56dp marginBottom is equalsto the BottomNav height -->
+        <!-- The 56dp marginBottom is equals to the BottomNav height -->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"

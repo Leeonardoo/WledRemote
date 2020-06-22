@@ -11,7 +11,7 @@ import br.com.leonardo.wledremote.rest.request.state.StateRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-sealed class StateStatus() {
+sealed class StateStatus {
     object Loading : StateStatus()
     data class GenericError(val error: String) : StateStatus()
     data class NetworkError(val error: String) : StateStatus()

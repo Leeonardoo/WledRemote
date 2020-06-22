@@ -7,7 +7,7 @@
 
         <variable
             name="dashViewmodel"
-            type="br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardFragmentViewModel" />
+            type="br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel" />
     </data>
 
     <FrameLayout
@@ -92,12 +92,12 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/color_picker_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_margin="8dp"
                     app:cardElevation="0dp"
-                    android:id="@+id/color_picker_container"
                     app:strokeColor="@color/stroke_color"
                     app:strokeWidth="1dp">
 
@@ -118,20 +118,6 @@
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
-
-<!--                        <top.defaults.colorpicker.ColorPickerView
-                            android:id="@+id/dashboard_fragment_picker"
-                            android:layout_width="250dp"
-                            android:layout_height="250dp"
-                            android:layout_margin="16dp"
-                            app:enableAlpha="false"
-                            app:enableBrightness="false"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/textViewColors">
-
-                        </top.defaults.colorpicker.ColorPickerView> -->
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -256,7 +242,7 @@
                             android:insetBottom="0dp"
                             android:minWidth="48dp"
                             android:minHeight="48dp"
-                            app:icon="@drawable/ic_save_black_24dp"
+                            app:icon="@drawable/save_black_24dp"
                             app:iconGravity="start"
                             app:iconPadding="0dp"
                             app:layout_constraintBottom_toBottomOf="@id/buttonToggleGroup"

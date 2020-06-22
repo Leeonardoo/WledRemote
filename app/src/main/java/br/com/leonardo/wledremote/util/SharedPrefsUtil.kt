@@ -6,10 +6,6 @@ import android.util.Log
 
 class SharedPrefsUtil private constructor(context: Context) {
 
-    private val PREF_FILE_NAME = "configs"
-    private val PREF_KEY_DEVICE = "device_ip"
-    private val PREF_KEY_IS_CONFIGURED = "is_configured"
-
     private val sharedPrefs: SharedPreferences =
         context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
 
@@ -40,7 +36,7 @@ class SharedPrefsUtil private constructor(context: Context) {
     }
 
 
-    fun getSharedPref(prefKey: String): String? = sharedPrefs.getString(prefKey, "")
+    private fun getSharedPref(prefKey: String): String? = sharedPrefs.getString(prefKey, "")
 
     private fun getSharedPrefBoolean(prefKey: String, defValue: Boolean): Boolean {
         if (prefKey == PREF_KEY_IS_CONFIGURED) {

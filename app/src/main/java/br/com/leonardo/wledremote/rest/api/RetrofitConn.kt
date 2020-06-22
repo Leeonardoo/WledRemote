@@ -19,7 +19,7 @@ class RetrofitConn {
 
     init {
         // Logging interceptor
-        val loggingInterceptor = HttpLoggingInterceptor();
+        val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         // Add the interceptor to OkHttpClient
@@ -38,7 +38,7 @@ class RetrofitConn {
             .build()
     }
 
-    fun <T> create(service: Class<T>): Any? {
+    private fun <T> create(service: Class<T>): Any? {
         val key = service.simpleName
         if (!servicesPool.containsKey(key)) {
             servicesPool[key] = retrofit.create(service)

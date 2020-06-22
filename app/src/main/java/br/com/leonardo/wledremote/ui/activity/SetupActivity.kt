@@ -2,19 +2,18 @@ package br.com.leonardo.wledremote.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.ActivitySetupBinding
-import br.com.leonardo.wledremote.ui.activity.viewmodel.SetupActivityViewModel
+import br.com.leonardo.wledremote.ui.activity.viewmodel.SetupViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
 
 class SetupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySetupBinding
-    private val viewModel: SetupActivityViewModel by viewModels()
+    private val viewModel: SetupViewModel by viewModels()
     private lateinit var sharedPrefs: SharedPrefsUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +25,7 @@ class SetupActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         else {
             binding = DataBindingUtil.setContentView(this, R.layout.activity_setup)
+            binding.lifecycleOwner = this
             binding.connectButton.setOnClickListener {
                 sharedPrefs.setConfigIP(ip = binding.ipText.text.toString())
                 val intent = Intent(this, MainActivity::class.java)

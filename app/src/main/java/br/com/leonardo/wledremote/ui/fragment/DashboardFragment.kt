@@ -9,17 +9,17 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.FragmentDashboardBinding
-import br.com.leonardo.wledremote.ui.activity.viewmodel.MainActivityViewModel
-import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardFragmentViewModel
+import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
+import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
 import com.airbnb.lottie.LottieCompositionFactory
 import com.google.android.material.slider.Slider
 import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 
 class DashboardFragment : Fragment() {
-    lateinit var binding: FragmentDashboardBinding
-    private val viewModel: DashboardFragmentViewModel by viewModels()
-    private val mainViewModel: MainActivityViewModel by activityViewModels()
+    private lateinit var binding: FragmentDashboardBinding
+    private val viewModel: DashboardViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +32,7 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.dashViewmodel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.statusAnimationView.addAnimatorUpdateListener {
             if (binding.statusAnimationView.frame == 159) {
                 LottieCompositionFactory.fromRawRes(context, R.raw.check).addListener {

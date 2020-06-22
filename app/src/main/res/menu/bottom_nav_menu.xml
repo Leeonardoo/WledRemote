@@ -4,11 +4,16 @@
     <item
         android:id="@+id/bottom_nav_dashboard"
         android:icon="@drawable/dashboard_white_24dp"
-        android:title="Dashboard" />
+        android:title="@string/dashboard_label" />
+
+    <item
+        android:id="@+id/bottom_nav_effects"
+        android:icon="@drawable/star_black_24dp"
+        android:title="@string/effects_label" />
 
     <item
         android:id="@+id/bottom_nav_settings"
         android:icon="@drawable/settings_white_24dp"
-        android:title="Settings" />
+        android:title="@string/settings_label" />
 
 </menu>

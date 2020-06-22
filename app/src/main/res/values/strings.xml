@@ -4,6 +4,8 @@
     <!-- Fragment Labels -->
     <string name="dashboard_label">Dashboard</string>
     <string name="settings_label">Settings</string>
+    <string name="effects_label">Effects</string>
+    <string name="power">Power</string>
 
 
     <!-- Dashboard -->
