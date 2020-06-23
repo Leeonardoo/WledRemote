@@ -1,7 +1,9 @@
 package br.com.leonardo.wledremote.rest.api
 
+import br.com.leonardo.wledremote.WledApplication
 import br.com.leonardo.wledremote.rest.endpoint.InfoEndpoint
 import br.com.leonardo.wledremote.rest.endpoint.StateEndpoint
+import br.com.leonardo.wledremote.util.SharedPrefsUtil
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,7 +16,8 @@ class RetrofitConn {
 
     private var retrofit: Retrofit
     private var httpClient: OkHttpClient
-    private val URL_BASE = "http://192.168.1.111"
+    private val sharedPrefsUtil = SharedPrefsUtil.getInstance(WledApplication.getAppContext())
+    private val URL_BASE = "http://" + sharedPrefsUtil.getSavedIP()
     private val servicesPool: MutableMap<String, Any?> = HashMap()
 
     init {

@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val stateRepository = StateRepository()
 
-    private val currentState = stateRepository.stateResponseStatus
+    private val currentState = stateRepository.stateResponse
 
     init {
         viewModelScope.launch {

@@ -24,17 +24,17 @@ class SharedPrefsUtil private constructor(context: Context) {
         }
     }
 
-    fun isIPConfigured(prefKey: String = PREF_KEY_IS_CONFIGURED): Boolean =
-        getSharedPrefBoolean(prefKey, false)
+    fun isIPConfigured(): Boolean =
+        getSharedPrefBoolean(PREF_KEY_IS_CONFIGURED, false)
 
-    fun getSavedIP(prefKey: String = PREF_KEY_DEVICE): String? =
-        getSharedPref(prefKey)
+    fun getSavedIP(): String? =
+        getSharedPref(PREF_KEY_DEVICE)
 
-    fun setConfigIP(prefKey: String = PREF_KEY_DEVICE, ip: String) {
-        sharedPrefs.edit().putString(prefKey, ip).apply()
-        sharedPrefs.edit().putBoolean(PREF_KEY_IS_CONFIGURED, true).apply()
-    }
+    fun setConfigIP(ip: String) =
+        sharedPrefs.edit().putString(PREF_KEY_DEVICE, ip).apply()
 
+    fun setIsIPConfigured(value: Boolean) =
+        sharedPrefs.edit().putBoolean(PREF_KEY_IS_CONFIGURED, value).apply()
 
     private fun getSharedPref(prefKey: String): String? = sharedPrefs.getString(prefKey, "")
 

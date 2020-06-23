@@ -19,18 +19,17 @@ sealed class StateStatus {
 }
 
 class StateRepository {
-
     private val apiHandler = ApiHandler()
 
-    private val _sendStateStatus = MutableLiveData<StateStatus>()
-    val sendStateStatus: LiveData<StateStatus> = _sendStateStatus
+    private val _sendStateResponse = MutableLiveData<StateStatus>()
+    val sendStateResponse: LiveData<StateStatus> = _sendStateResponse
 
-    private val _stateResponseStatus = MutableLiveData<StateStatus>()
-    val stateResponseStatus: LiveData<StateStatus> = _stateResponseStatus
+    private val _stateResponse = MutableLiveData<StateStatus>()
+    val stateResponse: LiveData<StateStatus> = _stateResponse
 
     suspend fun sendState(state: StateRequest) {
         withContext(Dispatchers.IO) {
-            _sendStateStatus.postValue(StateStatus.Loading)
+            _sendStateResponse.postValue(StateStatus.Loading)
 
             val response = apiHandler.handle(this) {
                 RetrofitConn.getInstance().stateEndpoint().sendState(state)
@@ -40,7 +39,7 @@ class StateRepository {
             when (response) {
                 is ResultWrapper.NetworkError -> {
                     Log.e("StateRepository", "Network Error while sending state!")
-                    _sendStateStatus.postValue(StateStatus.NetworkError("blank"))
+                    _sendStateResponse.postValue(StateStatus.NetworkError("blank"))
                 }
 
                 is ResultWrapper.GenericError -> {
@@ -48,12 +47,12 @@ class StateRepository {
                         "StateRepository",
                         "Generic Error while sending state! ${response.error.toString()}"
                     )
-                    _sendStateStatus.postValue(StateStatus.GenericError("blank"))
+                    _sendStateResponse.postValue(StateStatus.GenericError("blank"))
                 }
 
                 is ResultWrapper.Success -> {
                     Log.d("StateRepository", "State sent successfully!")
-                    _sendStateStatus.postValue(StateStatus.Success(response.value))
+                    _sendStateResponse.postValue(StateStatus.Success(response.value))
                     getState()
                 }
             }
@@ -62,7 +61,7 @@ class StateRepository {
 
     suspend fun getState() {
         withContext(Dispatchers.IO) {
-            _stateResponseStatus.postValue(StateStatus.Loading)
+            _stateResponse.postValue(StateStatus.Loading)
 
             val response = apiHandler.handle(this) {
                 RetrofitConn.getInstance().stateEndpoint().getState()
@@ -72,7 +71,7 @@ class StateRepository {
             when (response) {
                 is ResultWrapper.NetworkError -> {
                     Log.e("StateRepository", "Network Error while getting state!")
-                    _stateResponseStatus.postValue(StateStatus.NetworkError("blank"))
+                    _stateResponse.postValue(StateStatus.NetworkError("blank"))
                 }
 
                 is ResultWrapper.GenericError -> {
@@ -80,12 +79,12 @@ class StateRepository {
                         "StateRepository",
                         "Generic Error while getting state! ${response.error.toString()}"
                     )
-                    _stateResponseStatus.postValue(StateStatus.GenericError("blank"))
+                    _stateResponse.postValue(StateStatus.GenericError("blank"))
                 }
 
                 is ResultWrapper.Success -> {
                     Log.d("StateRepository", "Getting state was successful!")
-                    _stateResponseStatus.postValue(StateStatus.Success(response.value))
+                    _stateResponse.postValue(StateStatus.Success(response.value))
                 }
             }
         }
