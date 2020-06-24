@@ -11,6 +11,6 @@ interface InfoEndpoint {
     @GET("/json/effects")
     suspend fun getEffects() : List<String>
 
-    @GET("/json/effects")
+    @GET("/json/palettes")
     suspend fun getPalettes() : List<String>
 }

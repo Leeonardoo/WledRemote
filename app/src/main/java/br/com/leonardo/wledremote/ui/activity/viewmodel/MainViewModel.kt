@@ -6,6 +6,7 @@ import androidx.core.graphics.green
 import androidx.core.graphics.red
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.leonardo.wledremote.repository.InfoRepository
 import br.com.leonardo.wledremote.repository.StateRepository
 import br.com.leonardo.wledremote.repository.StateStatus
 import br.com.leonardo.wledremote.rest.request.state.Segment
@@ -16,23 +17,25 @@ import kotlinx.coroutines.withContext
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val stateRepository = StateRepository()
-
+    private val infoRepository = InfoRepository()
     private val currentState = stateRepository.stateResponse
+    val palettes = infoRepository.paletteResponse
+    val effects = infoRepository.effectResponse
 
     init {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) { stateRepository.getState() }
+            stateRepository.getState()
+            infoRepository.getPalettes()
+            infoRepository.getEffects()
         }
     }
 
     fun onPowerClicked() {
         if (currentState.value is StateStatus.Success) {
             viewModelScope.launch {
-                withContext(Dispatchers.IO) {
-                    val stateRequest =
-                        StateRequest(on = !(currentState.value as StateStatus.Success).state.on)
-                    stateRepository.sendState(stateRequest)
-                }
+                val stateRequest =
+                    StateRequest(on = !(currentState.value as StateStatus.Success).state.on)
+                stateRepository.sendState(stateRequest)
             }
         }
     }
@@ -41,17 +44,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val rgbColor = mutableListOf(colorArray.red, colorArray.green, colorArray.blue)
         //Hardcoded for the first one for now
         val state = StateRequest(segments = listOf(Segment(colors = listOf(rgbColor))))
-
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) { stateRepository.sendState(state) }
-        }
+        viewModelScope.launch { stateRepository.sendState(state) }
     }
 
     fun setBrightness(brightness: Int) {
         val state = StateRequest(brightness = brightness)
-
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) { stateRepository.sendState(state) }
-        }
+        viewModelScope.launch { stateRepository.sendState(state) }
     }
 }

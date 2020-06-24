@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.FragmentDashboardBinding
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
@@ -36,6 +37,10 @@ class DashboardFragment : Fragment() {
         binding.dashViewmodel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         sharedPrefs = SharedPrefsUtil.getInstance(requireContext())
+
+        setListeners()
+        setObservers()
+
         binding.statusAnimationView.addAnimatorUpdateListener {
             if (binding.statusAnimationView.frame == 159) {
                 LottieCompositionFactory.fromRawRes(context, R.raw.check).addListener {
@@ -46,7 +51,9 @@ class DashboardFragment : Fragment() {
                 }
             }
         }
+    }
 
+    private fun setListeners() {
         binding.colorPickerContainer.setOnClickListener {
             ColorPickerDialog.Builder(requireContext(), R.style.RoundedColorDialog).apply {
                 setTitle(getString(R.string.select_color))
@@ -67,5 +74,11 @@ class DashboardFragment : Fragment() {
             }
         }
         )
+    }
+
+    private fun setObservers() {
+        mainViewModel.palettes.observe(viewLifecycleOwner, Observer {
+            //Handle response and show recyclerView
+        })
     }
 }
