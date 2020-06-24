@@ -11,6 +11,7 @@ import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.FragmentDashboardBinding
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
+import br.com.leonardo.wledremote.util.SharedPrefsUtil
 import com.airbnb.lottie.LottieCompositionFactory
 import com.google.android.material.slider.Slider
 import com.skydoves.colorpickerview.ColorPickerDialog
@@ -20,6 +21,7 @@ class DashboardFragment : Fragment() {
     private lateinit var binding: FragmentDashboardBinding
     private val viewModel: DashboardViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
+    private lateinit var sharedPrefs: SharedPrefsUtil
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,13 +35,14 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.dashViewmodel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        sharedPrefs = SharedPrefsUtil.getInstance(requireContext())
         binding.statusAnimationView.addAnimatorUpdateListener {
             if (binding.statusAnimationView.frame == 159) {
                 LottieCompositionFactory.fromRawRes(context, R.raw.check).addListener {
                     binding.statusAnimationView.setComposition(it)
                     binding.statusAnimationView.playAnimation()
-                    binding.currentStatus.text = "Connected to: 192.168.1.250"
-                    binding.statusText.text = "Successfully connected!"
+                    binding.statusText.text = "Connected to: ${sharedPrefs.getSavedIP()}"
+                    binding.currentStatus.text = "Touch for details"
                 }
             }
         }

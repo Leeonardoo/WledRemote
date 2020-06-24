@@ -43,9 +43,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val state = StateRequest(segments = listOf(Segment(colors = listOf(rgbColor))))
 
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                stateRepository.sendState(state)
-            }
+            withContext(Dispatchers.IO) { stateRepository.sendState(state) }
         }
     }
 

@@ -17,7 +17,7 @@ class RetrofitConn {
     private var retrofit: Retrofit
     private var httpClient: OkHttpClient
     private val sharedPrefsUtil = SharedPrefsUtil.getInstance(WledApplication.getAppContext())
-    private val URL_BASE = "http://" + sharedPrefsUtil.getSavedIP()
+    private val baseUrl = "http://" + sharedPrefsUtil.getSavedIP()
     private val servicesPool: MutableMap<String, Any?> = HashMap()
 
     init {
@@ -35,7 +35,7 @@ class RetrofitConn {
 
         // Build the retrofit object
         retrofit = Retrofit.Builder()
-            .baseUrl(URL_BASE)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient)
             .build()

@@ -2,7 +2,6 @@ package br.com.leonardo.wledremote.util
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 
 class SharedPrefsUtil private constructor(context: Context) {
 
@@ -19,7 +18,6 @@ class SharedPrefsUtil private constructor(context: Context) {
             }
 
         private fun sharedPreferences(context: Context): SharedPrefsUtil {
-            Log.v("SINGLETON", "SharedPrefsUtil foi instanciado!")
             return SharedPrefsUtil(context.applicationContext)
         }
     }
