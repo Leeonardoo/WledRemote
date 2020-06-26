@@ -14,6 +14,7 @@ import br.com.leonardo.wledremote.rest.request.state.StateRequest
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
+
     private val stateRepository = StateRepository()
     private val infoRepository = InfoRepository()
     private val currentState = stateRepository.stateResponse
@@ -30,11 +31,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun onPowerClicked() {
         if (currentState.value is StateStatus.Success) {
-            viewModelScope.launch {
-                val stateRequest =
-                    StateRequest(on = !(currentState.value as StateStatus.Success).state.on)
-                stateRepository.sendState(stateRequest)
-            }
+            val state = StateRequest(on = !(currentState.value as StateStatus.Success).state.on)
+            sendState(state)
         }
     }
 
@@ -42,16 +40,25 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val rgbColor = mutableListOf(colorArray.red, colorArray.green, colorArray.blue)
         //Hardcoded for the first one for now
         val state = StateRequest(segments = listOf(Segment(colors = listOf(rgbColor))))
-        viewModelScope.launch { stateRepository.sendState(state) }
+        sendState(state)
     }
 
     fun setBrightness(brightness: Int) {
         val state = StateRequest(brightness = brightness)
-        viewModelScope.launch { stateRepository.sendState(state) }
+        sendState(state)
     }
 
     fun setPalette(paletteId: Int) {
         val state = StateRequest(segments = listOf(Segment(paletteId = paletteId)))
+        sendState(state)
+    }
+
+    fun setEffect(effectId: Int) {
+        val state = StateRequest(segments = listOf(Segment(effectId = effectId)))
+        sendState(state)
+    }
+
+    private fun sendState(state: StateRequest) {
         viewModelScope.launch { stateRepository.sendState(state) }
     }
 }

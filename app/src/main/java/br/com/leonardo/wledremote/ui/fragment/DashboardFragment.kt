@@ -87,8 +87,7 @@ class DashboardFragment : Fragment() {
                     it.palettes
                 )
                 binding.paletteDropdownMenu.setAdapter(adapter)
-
-                binding.paletteDropdownMenu.setOnItemClickListener { parent, view, position, id ->
+                binding.paletteDropdownMenu.setOnItemClickListener { _, _, position, _ ->
                     mainViewModel.setPalette(position)
                 }
             }
