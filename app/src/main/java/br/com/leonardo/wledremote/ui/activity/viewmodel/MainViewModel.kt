@@ -11,9 +11,7 @@ import br.com.leonardo.wledremote.repository.StateRepository
 import br.com.leonardo.wledremote.repository.StateStatus
 import br.com.leonardo.wledremote.rest.request.state.Segment
 import br.com.leonardo.wledremote.rest.request.state.StateRequest
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val stateRepository = StateRepository()

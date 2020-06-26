@@ -2,6 +2,7 @@
     <!-- App-wide -->
     <string name="app_name">Wled Remote</string>
     <string name="retry">Retry</string>
+    <string name="connect">Connect</string>
 
     <!-- Fragment Labels -->
     <string name="dashboard_label">Dashboard</string>
@@ -14,9 +15,14 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="select_color">Choose a new color</string>
+    <string name="dashboard_details">Touch for details</string>
+    <string name="dashboard_connected_to">Connected to: %s</string>
 
     <!-- SetupActivity -->
     <string name="connection_failed">Connection failed</string>
     <string name="connection_failed_message">An error happened while trying to connect. Check your connection and your IP, then try again</string>
     <string name="connection_failed_message_extras">An error happened while trying to connect. The response was %s</string>
+    <string name="setup_device_ip">Device IP</string>
+    <string name="setup_title">Ready to start?</string>
+    <string name="setup_subtitle">Enter your controller IP to continue</string>
 </resources>

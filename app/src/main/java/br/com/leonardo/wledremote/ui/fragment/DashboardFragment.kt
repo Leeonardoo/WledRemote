@@ -46,8 +46,9 @@ class DashboardFragment : Fragment() {
                 LottieCompositionFactory.fromRawRes(context, R.raw.check).addListener {
                     binding.statusAnimationView.setComposition(it)
                     binding.statusAnimationView.playAnimation()
-                    binding.statusText.text = "Connected to: ${sharedPrefs.getSavedIP()}"
-                    binding.currentStatus.text = "Touch for details"
+                    binding.statusText.text =
+                        getString(R.string.dashboard_connected_to, sharedPrefs.getSavedIP())
+                    binding.currentStatus.text = getString(R.string.dashboard_details)
                 }
             }
         }
