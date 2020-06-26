@@ -34,10 +34,10 @@
                     android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:fontFamily="@font/manrope_bold"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:layout_gravity="center"
                     android:textAlignment="center"
                     android:textColor="@color/primaryColor"
                     android:textSize="18sp" />
@@ -47,6 +47,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <!-- The 56dp marginBottom is equals to the BottomNav height -->
+        <!-- TODO: fix bottom navigation going above the keyboard -->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
@@ -56,13 +57,14 @@
             app:defaultNavHost="true"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            app:layout_anchorGravity="bottom"
             app:menu="@menu/bottom_nav_menu" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

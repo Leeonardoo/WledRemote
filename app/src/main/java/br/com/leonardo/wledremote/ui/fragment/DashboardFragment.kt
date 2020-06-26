@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.FragmentDashboardBinding
+import br.com.leonardo.wledremote.repository.PaletteStatus
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
@@ -79,7 +81,17 @@ class DashboardFragment : Fragment() {
 
     private fun setObservers() {
         mainViewModel.palettes.observe(viewLifecycleOwner, Observer {
-            //Handle response and show recyclerView
+            if (it is PaletteStatus.Success) {
+                val adapter = ArrayAdapter<String>(
+                    requireContext(), R.layout.support_simple_spinner_dropdown_item,
+                    it.palettes
+                )
+                binding.paletteDropdownMenu.setAdapter(adapter)
+
+                binding.paletteDropdownMenu.setOnItemClickListener { parent, view, position, id ->
+                    mainViewModel.setPalette(position)
+                }
+            }
         })
     }
 }

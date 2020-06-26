@@ -49,4 +49,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val state = StateRequest(brightness = brightness)
         viewModelScope.launch { stateRepository.sendState(state) }
     }
+
+    fun setPalette(paletteId: Int) {
+        val state = StateRequest(segments = listOf(Segment(paletteId = paletteId)))
+        viewModelScope.launch { stateRepository.sendState(state) }
+    }
 }
