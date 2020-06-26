@@ -6,5 +6,5 @@
     <fragment
         android:id="@+id/effectsFragment"
         android:name="br.com.leonardo.wledremote.ui.fragment.EffectsFragment"
-        android:label="EffectsFragment" />
+        android:label="@string/effects_label" />
 </navigation>
