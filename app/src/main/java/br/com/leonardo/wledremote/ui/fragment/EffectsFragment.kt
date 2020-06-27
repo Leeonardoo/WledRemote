@@ -14,6 +14,7 @@ import br.com.leonardo.wledremote.databinding.FragmentEffectsBinding
 import br.com.leonardo.wledremote.repository.EffectStatus
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.EffectsViewModel
+import com.google.android.material.slider.Slider
 
 class EffectsFragment : Fragment() {
 
@@ -35,6 +36,7 @@ class EffectsFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         setObservers()
+        setListeners()
     }
 
     private fun setObservers() {
@@ -45,6 +47,22 @@ class EffectsFragment : Fragment() {
                     mainViewModel.setEffect(effects.indexOf(effect))
                 }
                 binding.effectsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            }
+        })
+    }
+
+    private fun setListeners() {
+        binding.effectIntensitySlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {}
+            override fun onStopTrackingTouch(slider: Slider) {
+                mainViewModel.setEffectAttr(intensity = binding.effectIntensitySlider.value.toInt())
+            }
+        })
+
+        binding.effectSpeedSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {}
+            override fun onStopTrackingTouch(slider: Slider) {
+                mainViewModel.setEffectAttr(speed = binding.effectSpeedSlider.value.toInt())
             }
         })
     }

@@ -58,6 +58,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         sendState(state)
     }
 
+    fun setEffectAttr(intensity: Int? = null, speed: Int? = null) {
+        val state = StateRequest(
+            segments = listOf(
+                Segment(effectIntensity = intensity, relativeSpeed = speed)
+            )
+        )
+        sendState(state)
+    }
+
     private fun sendState(state: StateRequest) {
         viewModelScope.launch { stateRepository.sendState(state) }
     }
