@@ -1,39 +1,38 @@
 package br.com.leonardo.wledremote.model.state
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class State(
 
-	@field:SerializedName("pss")
-	val pss: Int,
+    @Json(name = "pss")
+    val pss: Int? = null,
 
-	@field:SerializedName("ps")
-	val currentPreset: Int,
+    @Json(name = "ps")
+    val currentPreset: Int? = null,
 
-	@field:SerializedName("mainseg")
-	val mainSegment: Int,
+    @Json(name = "mainseg")
+    val mainSegment: Int? = null,
 
-	@field:SerializedName("seg")
-	val segments: List<Segment>,
+    @Json(name = "seg")
+    val segments: List<Segment?>? = null,
 
-	@field:SerializedName("ccnf")
-	val ccnf: Ccnf,
+    val ccnf: Ccnf? = null,
 
-	@field:SerializedName("bri")
-	val brightness: Int,
+    @Json(name = "bri")
+    val brightness: Int? = null,
 
-	@field:SerializedName("udpn")
-	val udpn: Udpn,
+    val udpn: Udpn? = null,
 
-	@field:SerializedName("pl")
-	val currentPlaylist: Int,
+    @Json(name = "pl")
+    val currentPlaylist: Int? = null,
 
-	@field:SerializedName("transition")
-	val transition: Int,
+    @Json(name = "transition")
+    val transition: Int? = null,
 
-	@field:SerializedName("nl")
-	val nightLight: NightLight,
+    @Json(name = "nl")
+    val nightLight: NightLight? = null,
 
-	@field:SerializedName("on")
-	val on: Boolean
+    val on: Boolean? = null
 )

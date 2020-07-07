@@ -1,18 +1,20 @@
 package br.com.leonardo.wledremote.model.info
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Wifi(
 
-	@field:SerializedName("rssi")
-	val rssi: Int,
+    @Json(name = "rssi")
+    val rssi: Int? = null,
 
-	@field:SerializedName("bssid")
-	val bssid: String,
+    @Json(name = "bssid")
+    val bssid: String? = null,
 
-	@field:SerializedName("channel")
-	val channel: Int,
+    @Json(name = "channel")
+    val channel: Int? = null,
 
-	@field:SerializedName("signal")
-	val signal: Int
+    @Json(name = "signal")
+    val signal: Int? = null
 )

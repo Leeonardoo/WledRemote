@@ -1,18 +1,18 @@
 package br.com.leonardo.wledremote.model.state
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class NightLight(
 
-	@field:SerializedName("dur")
-	val duration: Int,
+    @Json(name = "dur")
+    val duration: Int? = null,
 
-	@field:SerializedName("fade")
-	val fade: Boolean,
+    val fade: Boolean? = null,
 
-	@field:SerializedName("tbri")
-	val brightness: Int,
+    @Json(name = "tbri")
+    val brightness: Int? = null,
 
-	@field:SerializedName("on")
-	val on: Boolean
+    val on: Boolean? = null
 )

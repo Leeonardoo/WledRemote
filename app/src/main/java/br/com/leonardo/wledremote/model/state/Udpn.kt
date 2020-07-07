@@ -1,12 +1,13 @@
 package br.com.leonardo.wledremote.model.state
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Udpn(
 
-	@field:SerializedName("recv")
-	val recv: Boolean,
+    @Json(name = "recv")
+    val recv: Boolean? = null,
 
-	@field:SerializedName("send")
-	val send: Boolean
+    val send: Boolean? = null
 )

@@ -1,15 +1,10 @@
 package br.com.leonardo.wledremote.model.state
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Ccnf(
-
-	@field:SerializedName("min")
-	val min: Int,
-
-	@field:SerializedName("max")
-	val max: Int,
-
-	@field:SerializedName("time")
-	val time: Int
+    val min: Int? = null,
+    val max: Int? = null,
+    val time: Int? = null
 )

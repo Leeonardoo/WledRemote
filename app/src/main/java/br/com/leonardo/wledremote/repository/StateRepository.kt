@@ -7,7 +7,6 @@ import br.com.leonardo.wledremote.model.state.State
 import br.com.leonardo.wledremote.rest.api.ApiHandler
 import br.com.leonardo.wledremote.rest.api.ResultWrapper
 import br.com.leonardo.wledremote.rest.api.RetrofitConn
-import br.com.leonardo.wledremote.rest.request.state.StateRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -27,7 +26,7 @@ class StateRepository {
     private val _stateResponse = MutableLiveData<StateStatus>()
     val stateResponse: LiveData<StateStatus> = _stateResponse
 
-    suspend fun sendState(state: StateRequest) {
+    suspend fun sendState(state: State) {
         withContext(Dispatchers.IO) {
             _sendStateResponse.postValue(StateStatus.Loading)
 

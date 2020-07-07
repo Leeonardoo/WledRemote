@@ -1,45 +1,47 @@
 package br.com.leonardo.wledremote.model.state
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Segment(
 
-	@field:SerializedName("col")
-	val colors: List<List<Int>>,
+    @Json(name = "col")
+    val colors: List<List<Int?>?>? = null,
 
-	@field:SerializedName("rev")
-	val reverse: Boolean,
+    @Json(name = "rev")
+    val reverse: Boolean? = null,
 
-	@field:SerializedName("grp")
-	val grp: Int,
+    @Json(name = "grp")
+    val grp: Int? = null,
 
-	@field:SerializedName("sx")
-	val relativeSpeed: Int,
+    @Json(name = "sx")
+    val relativeSpeed: Int? = null,
 
-	@field:SerializedName("spc")
-	val spc: Int,
+    @Json(name = "spc")
+    val spc: Int? = null,
 
-	@field:SerializedName("start")
-	val start: Int,
+    @Json(name = "start")
+    val start: Int? = null,
 
-	@field:SerializedName("ix")
-	val effectIntensity: Int,
+    @Json(name = "ix")
+    val effectIntensity: Int? = null,
 
-	@field:SerializedName("fx")
-	val effectId: Int,
+    @Json(name = "fx")
+    val effectId: Int? = null,
 
-	@field:SerializedName("stop")
-	val stop: Int,
+    @Json(name = "stop")
+    val stop: Int? = null,
 
-	@field:SerializedName("len")
-	val lenght: Int,
+    @Json(name = "len")
+    val lenght: Int? = null,
 
-	@field:SerializedName("pal")
-	val paletteId: Int,
+    @Json(name = "pal")
+    val paletteId: Int? = null,
 
-	@field:SerializedName("id")
-	val id: Int,
+    @Json(name = "id")
+    val id: Int? = null,
 
-	@field:SerializedName("sel")
-	val selected: Boolean
+    @Json(name = "sel")
+    val selected: Boolean? = null
 )

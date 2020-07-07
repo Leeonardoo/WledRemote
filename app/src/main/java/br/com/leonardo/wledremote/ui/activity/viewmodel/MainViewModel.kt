@@ -6,11 +6,11 @@ import androidx.core.graphics.green
 import androidx.core.graphics.red
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.leonardo.wledremote.model.state.Segment
+import br.com.leonardo.wledremote.model.state.State
 import br.com.leonardo.wledremote.repository.InfoRepository
 import br.com.leonardo.wledremote.repository.StateRepository
 import br.com.leonardo.wledremote.repository.StateStatus
-import br.com.leonardo.wledremote.rest.request.state.Segment
-import br.com.leonardo.wledremote.rest.request.state.StateRequest
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -31,35 +31,37 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun onPowerClicked() {
         if (currentState.value is StateStatus.Success) {
-            val state = StateRequest(on = !(currentState.value as StateStatus.Success).state.on)
-            sendState(state)
+            (currentState.value as StateStatus.Success).state.on?.let {
+                val state = State(on = !it)
+                sendState(state)
+            }
         }
     }
 
     fun setColor(colorArray: Int) {
         val rgbColor = mutableListOf(colorArray.red, colorArray.green, colorArray.blue)
         //Hardcoded for the first one for now
-        val state = StateRequest(segments = listOf(Segment(colors = listOf(rgbColor))))
+        val state = State(segments = listOf(Segment(colors = listOf(rgbColor))))
         sendState(state)
     }
 
     fun setBrightness(brightness: Int) {
-        val state = StateRequest(brightness = brightness)
+        val state = State(brightness = brightness)
         sendState(state)
     }
 
     fun setPalette(paletteId: Int) {
-        val state = StateRequest(segments = listOf(Segment(paletteId = paletteId)))
+        val state = State(segments = listOf(Segment(paletteId = paletteId)))
         sendState(state)
     }
 
     fun setEffect(effectId: Int) {
-        val state = StateRequest(segments = listOf(Segment(effectId = effectId)))
+        val state = State(segments = listOf(Segment(effectId = effectId)))
         sendState(state)
     }
 
     fun setEffectAttr(intensity: Int? = null, speed: Int? = null) {
-        val state = StateRequest(
+        val state = State(
             segments = listOf(
                 Segment(effectIntensity = intensity, relativeSpeed = speed)
             )
@@ -67,7 +69,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         sendState(state)
     }
 
-    private fun sendState(state: StateRequest) {
+    private fun sendState(state: State) {
         viewModelScope.launch { stateRepository.sendState(state) }
     }
 }

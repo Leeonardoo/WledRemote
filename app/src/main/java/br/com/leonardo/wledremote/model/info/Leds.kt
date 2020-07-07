@@ -1,30 +1,32 @@
 package br.com.leonardo.wledremote.model.info
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Leds(
 
-	@field:SerializedName("pin")
-	val pin: List<Int>,
+    @Json(name = "pin")
+    val pin: List<Int?>? = null,
 
-	@field:SerializedName("seglock")
-	val segLock: Boolean,
+    @Json(name = "seglock")
+    val segLock: Boolean? = null,
 
-	@field:SerializedName("count")
-	val count: Int,
+    @Json(name = "count")
+    val count: Int? = null,
 
-	@field:SerializedName("maxpwr")
-	val maxPower: Int,
+    @Json(name = "maxpwr")
+    val maxPower: Int? = null,
 
-	@field:SerializedName("pwr")
-	val currentPowerUsage: Int,
+    @Json(name = "pwr")
+    val currentPowerUsage: Int? = null,
 
-	@field:SerializedName("maxseg")
-	val maxSegments: Int,
+    @Json(name = "maxseg")
+    val maxSegments: Int? = null,
 
-	@field:SerializedName("rgbw")
-	val rgbw: Boolean,
+    @Json(name = "rgbw")
+    val rgbw: Boolean? = null,
 
-	@field:SerializedName("wv")
-	val wv: Boolean
+    @Json(name = "wv")
+    val wv: Boolean? = null
 )

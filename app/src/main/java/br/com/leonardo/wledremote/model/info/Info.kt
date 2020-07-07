@@ -1,63 +1,59 @@
 package br.com.leonardo.wledremote.model.info
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Info(
+    val lwip: Int? = null,
 
-	@field:SerializedName("lwip")
-	val lwip: Int,
+    @Json(name = "ver")
+    val versionName: String? = null,
 
-	@field:SerializedName("ver")
-	val versionName: String,
+    val wifi: Wifi? = null,
 
-	@field:SerializedName("wifi")
-	val wifi: Wifi,
+    @Json(name = "product")
+    val productName: String? = null,
 
-	@field:SerializedName("product")
-	val productName: String,
+    @Json(name = "palcount")
+    val palettesCount: Int? = null,
 
-	@field:SerializedName("palcount")
-	val palettesCount: Int,
+    @Json(name = "mac")
+    val macAddress: String? = null,
 
-	@field:SerializedName("mac")
-	val macAddress: String,
+    @Json(name = "freeheap")
+    val freeHeap: Int? = null,
 
-	@field:SerializedName("freeheap")
-	val freeHeap: Int,
+    @Json(name = "uptime")
+    val uptime: Int? = null,
 
-	@field:SerializedName("uptime")
-	val uptime: Int,
+    @Json(name = "vid")
+    val buildId: Int? = null,
 
-	@field:SerializedName("vid")
-	val buildId: Int,
+    @Json(name = "str")
+    val str: Boolean? = null,
 
-	@field:SerializedName("str")
-	val str: Boolean,
+    @Json(name = "core")
+    val arduinoVersion: String? = null,
 
-	@field:SerializedName("core")
-	val arduinoVersion: String,
+    @Json(name = "opt")
+    val opt: Int? = null,
 
-	@field:SerializedName("opt")
-	val opt: Int,
+    @Json(name = "fxcount")
+    val effectsCount: Int? = null,
 
-	@field:SerializedName("fxcount")
-	val effectsCount: Int,
+    val name: String? = null,
 
-	@field:SerializedName("name")
-	val name: String,
+    val leds: Leds? = null,
 
-	@field:SerializedName("leds")
-	val leds: Leds,
+    @Json(name = "arch")
+    val platformName: String? = null,
 
-	@field:SerializedName("arch")
-	val platformName: String,
+    val brand: String? = null,
 
-	@field:SerializedName("brand")
-	val brand: String,
+    @Json(name = "udpport")
+    val udpPort: Int? = null,
 
-	@field:SerializedName("udpport")
-	val udpPort: Int,
-
-	@field:SerializedName("live")
-	val isReceivingRtData: Boolean
+    @Json(name = "live")
+    val isReceivingRtData: Boolean? = null
 )
