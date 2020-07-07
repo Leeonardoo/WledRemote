@@ -17,7 +17,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val stateRepository = StateRepository()
     private val infoRepository = InfoRepository()
-    private val currentState = stateRepository.stateResponse
+    val currentState = stateRepository.stateResponse
     val palettes = infoRepository.paletteResponse
     val effects = infoRepository.effectResponse
 

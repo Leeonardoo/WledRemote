@@ -12,10 +12,12 @@ import androidx.lifecycle.Observer
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.FragmentDashboardBinding
 import br.com.leonardo.wledremote.repository.PaletteStatus
+import br.com.leonardo.wledremote.repository.StateStatus
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
 import com.airbnb.lottie.LottieCompositionFactory
+import com.airbnb.lottie.LottieDrawable
 import com.google.android.material.slider.Slider
 import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
@@ -38,22 +40,11 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.dashViewmodel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.statusAnimationView.repeatCount = LottieDrawable.INFINITE
         sharedPrefs = SharedPrefsUtil.getInstance(requireContext())
 
         setListeners()
         setObservers()
-
-        binding.statusAnimationView.addAnimatorUpdateListener {
-            if (binding.statusAnimationView.frame == 159) {
-                LottieCompositionFactory.fromRawRes(context, R.raw.check).addListener {
-                    binding.statusAnimationView.setComposition(it)
-                    binding.statusAnimationView.playAnimation()
-                    binding.statusText.text =
-                        getString(R.string.dashboard_connected_to, sharedPrefs.getSavedIP())
-                    binding.currentStatus.text = getString(R.string.dashboard_details)
-                }
-            }
-        }
     }
 
     private fun setListeners() {
@@ -90,6 +81,20 @@ class DashboardFragment : Fragment() {
                 binding.paletteDropdownMenu.setOnItemClickListener { _, _, position, _ ->
                     mainViewModel.setPalette(position)
                 }
+            }
+        })
+
+        mainViewModel.currentState.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is StateStatus.Success -> {
+                    binding.statusAnimationView.repeatCount = 0
+                    binding.statusAnimationView.apply {
+                        setAnimation(R.raw.done)
+                        playAnimation()
+                    }
+                }
+
+                //Show errors
             }
         })
     }
