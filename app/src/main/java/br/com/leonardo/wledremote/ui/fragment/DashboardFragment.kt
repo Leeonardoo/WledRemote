@@ -16,7 +16,6 @@ import br.com.leonardo.wledremote.repository.StateStatus
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
-import com.airbnb.lottie.LottieCompositionFactory
 import com.airbnb.lottie.LottieDrawable
 import com.google.android.material.slider.Slider
 import com.skydoves.colorpickerview.ColorPickerDialog

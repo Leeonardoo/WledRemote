@@ -10,13 +10,21 @@
     <string name="effects_label">Effects</string>
     <string name="power">Power</string>
 
-
-    <!-- Dashboard -->
+    <!-- DashboardFragment -->
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="select_color">Choose a new color</string>
     <string name="dashboard_details">Touch for details</string>
     <string name="dashboard_connected_to">Connected to: %s</string>
+    <string name="brightness">Brightness</string>
+    <string name="choose_a_palette">Choose a palette</string>
+    <string name="palette">Palette</string>
+    <string name="change_color">Change color</string>
+    <string name="connecting">Connecting…</string>
+
+    <!-- EffectsFragment -->
+    <string name="speed">Speed</string>
+    <string name="intensity">Intensity</string>
 
     <!-- SetupActivity -->
     <string name="connection_failed">Connection failed</string>

@@ -9,9 +9,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.*
-import java.util.concurrent.TimeUnit
 
-//TODO migrate to Moshi
 class RetrofitConn {
 
     private var retrofit: Retrofit
@@ -21,19 +19,13 @@ class RetrofitConn {
     private val servicesPool: MutableMap<String, Any?> = HashMap()
 
     init {
-        // Logging interceptor
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
-        // Add the interceptor to OkHttpClient
         httpClient = OkHttpClient.Builder()
             .retryOnConnectionFailure(true)
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(loggingInterceptor).build()
 
-        // Build the retrofit object
         retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(MoshiConverterFactory.create())
