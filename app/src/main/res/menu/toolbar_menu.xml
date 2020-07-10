@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_power"
-        android:icon="@drawable/power_green_24dp"
+        android:icon="@drawable/power_black_24dp"
         android:title="@string/power"
         app:showAsAction="always" />
 

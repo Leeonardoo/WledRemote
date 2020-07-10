@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.FragmentDashboardBinding
 import br.com.leonardo.wledremote.repository.PaletteStatus
@@ -22,6 +23,7 @@ import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 
 class DashboardFragment : Fragment() {
+
     private lateinit var binding: FragmentDashboardBinding
     private val viewModel: DashboardViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
@@ -65,8 +67,12 @@ class DashboardFragment : Fragment() {
             override fun onStopTrackingTouch(slider: Slider) {
                 mainViewModel.setBrightness(slider.value.toInt())
             }
+        })
+
+        binding.statusContainer.setOnClickListener {
+            val directions = DashboardFragmentDirections.actionDashboardFragmentToInfoFragment()
+            findNavController().navigate(directions)
         }
-        )
     }
 
     private fun setObservers() {
