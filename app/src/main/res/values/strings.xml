@@ -10,13 +10,13 @@
     <string name="effects_label">Effects</string>
     <string name="power">Power</string>
 
-
     <!-- Dashboard -->
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="select_color">Choose a new color</string>
     <string name="dashboard_details">Touch for details</string>
     <string name="dashboard_connected_to">Connected to: %s</string>
+    <string name="brightness_percent">%s%</string>
 
     <!-- SetupActivity -->
     <string name="connection_failed">Connection failed</string>

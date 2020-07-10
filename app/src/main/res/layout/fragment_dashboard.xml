@@ -13,23 +13,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="8dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/status_container"
+                style="@style/RoundedCardStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/ripple_foreground_toolbar"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="16dp"
                 android:clickable="true"
-                android:focusable="true"
-                app:cardElevation="0dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:strokeColor="@color/stroke_color"
-                app:strokeWidth="1dp">
+                android:focusable="true">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -84,15 +82,11 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/color_picker_container"
+                style="@style/RoundedCardStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="8dp"
-                app:cardElevation="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/status_container"
-                app:strokeColor="@color/stroke_color"
-                app:strokeWidth="1dp">
+                android:layout_marginTop="16dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -102,8 +96,8 @@
                         android:id="@+id/change_color_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="12dp"
                         android:fontFamily="@font/manrope_bold"
                         android:text="Change color"
                         android:textSize="18sp"
@@ -165,15 +159,11 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/palette_container"
-                android:layout_width="0dp"
+                style="@style/RoundedCardStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                app:cardElevation="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/color_picker_container"
-                app:strokeColor="@color/stroke_color"
-                app:strokeWidth="1dp">
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="16dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -184,8 +174,8 @@
                         android:id="@+id/palette_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="12dp"
                         android:fontFamily="@font/manrope_bold"
                         android:text="Palette"
                         android:textSize="18sp"
@@ -211,6 +201,7 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/manrope_medium"
                             android:inputType="textNoSuggestions"
                             android:maxLines="1"
                             android:singleLine="true" />
@@ -222,18 +213,16 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                style="@style/RoundedCardStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_margin="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                app:cardElevation="0dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/palette_container"
-                app:strokeColor="@color/stroke_color"
-                app:strokeWidth="1dp">
+                app:layout_constraintTop_toBottomOf="@+id/palette_container">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -243,8 +232,8 @@
                         android:id="@+id/textBrightness"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="12dp"
                         android:fontFamily="@font/manrope_bold"
                         android:text="Brightness"
                         android:textSize="18sp"
@@ -272,7 +261,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
