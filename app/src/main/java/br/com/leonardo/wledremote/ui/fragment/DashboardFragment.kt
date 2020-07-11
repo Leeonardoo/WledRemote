@@ -12,8 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.FragmentDashboardBinding
-import br.com.leonardo.wledremote.repository.PaletteStatus
-import br.com.leonardo.wledremote.repository.StateStatus
+import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
@@ -77,10 +76,10 @@ class DashboardFragment : Fragment() {
 
     private fun setObservers() {
         mainViewModel.palettes.observe(viewLifecycleOwner, Observer {
-            if (it is PaletteStatus.Success) {
+            if (it is LocalResultWrapper.Success) {
                 val adapter = ArrayAdapter<String>(
                     requireContext(), R.layout.support_simple_spinner_dropdown_item,
-                    it.palettes
+                    it.value
                 )
                 binding.paletteDropdownMenu.setAdapter(adapter)
                 binding.paletteDropdownMenu.setOnItemClickListener { _, _, position, _ ->
@@ -91,7 +90,7 @@ class DashboardFragment : Fragment() {
 
         mainViewModel.currentState.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is StateStatus.Success -> {
+                is LocalResultWrapper.Success -> {
                     binding.statusAnimationView.repeatCount = 0
                     binding.statusAnimationView.apply {
                         setAnimation(R.raw.done)

@@ -5,13 +5,19 @@ import androidx.core.graphics.blue
 import androidx.core.graphics.green
 import androidx.core.graphics.red
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import br.com.leonardo.wledremote.model.info.Info
 import br.com.leonardo.wledremote.model.state.Segment
 import br.com.leonardo.wledremote.model.state.State
 import br.com.leonardo.wledremote.repository.InfoRepository
 import br.com.leonardo.wledremote.repository.StateRepository
-import br.com.leonardo.wledremote.repository.StateStatus
+import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -21,17 +27,33 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val palettes = infoRepository.paletteResponse
     val effects = infoRepository.effectResponse
 
+    private val infoResponse = infoRepository.infoResponse
+
+    private val _infoLoading = MutableLiveData<Boolean>()
+    val infoLoading: LiveData<Boolean> = _infoLoading
+    //We want it to be global for all the fragments
+    private val _info = MutableLiveData<Info>()
+    val info: LiveData<Info> = _info
+
     init {
-        viewModelScope.launch {
-            stateRepository.getState()
-            infoRepository.getPalettes()
-            infoRepository.getEffects()
-        }
+        getState()
+        getInfo()
+        getPalettes()
+        getEffects()
+        flowInfo()
     }
 
+    fun getInfo() = viewModelScope.launch { infoRepository.getInfo() }
+
+    fun getState() = viewModelScope.launch { stateRepository.getState() }
+
+    fun getEffects() = viewModelScope.launch { infoRepository.getEffects() }
+
+    fun getPalettes() = viewModelScope.launch { infoRepository.getPalettes() }
+
     fun onPowerClicked() {
-        if (currentState.value is StateStatus.Success) {
-            (currentState.value as StateStatus.Success).state.on?.let {
+        if (currentState.value is LocalResultWrapper.Success) {
+            (currentState.value as LocalResultWrapper.Success).value.on?.let {
                 val state = State(on = !it)
                 sendState(state)
             }
@@ -67,6 +89,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             )
         )
         sendState(state)
+    }
+
+    private fun flowInfo() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                infoResponse.collect {
+                    when (it) {
+                        is LocalResultWrapper.Loading -> _infoLoading.postValue(true)
+                        is LocalResultWrapper.Success -> {
+                            _info.postValue(it.value)
+                            _infoLoading.postValue(false)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun sendState(state: State) {

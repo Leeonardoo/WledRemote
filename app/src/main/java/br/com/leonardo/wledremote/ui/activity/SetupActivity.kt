@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.ActivitySetupBinding
-import br.com.leonardo.wledremote.repository.InfoStatus
 import br.com.leonardo.wledremote.ui.activity.viewmodel.SetupViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
 import br.com.leonardo.wledremote.util.WledDialogUtil
@@ -38,22 +37,23 @@ class SetupActivity : AppCompatActivity() {
     }
 
     private fun setObservers() {
-        viewModel.infoResponse.observe(this, Observer {
-            when (it) {
-                is InfoStatus.Success -> {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    sharedPrefs.setIsIPConfigured(true)
-                }
-
-                is InfoStatus.Loading -> {
-                    binding.connecting.visibility = View.VISIBLE
-                    binding.connectButton.visibility = View.INVISIBLE
-                }
-
-                is InfoStatus.GenericError -> showError(it.error)
-                is InfoStatus.NetworkError -> showError(it.error)
-            }
+        viewModel.info.observe(this, Observer {
+//            when (it) {
+//                is InfoStatus.Success -> {
+            val intent = Intent(this, MainActivity::class.java)
+            sharedPrefs.setIsIPConfigured(true)
+            startActivity(intent)
+            finish()
+//                }
+//
+//                is InfoStatus.Loading -> {
+//                    binding.connecting.visibility = View.VISIBLE
+//                    binding.connectButton.visibility = View.INVISIBLE
+//                }
+//
+//                is InfoStatus.GenericError -> showError(it.error)
+//                is InfoStatus.NetworkError -> showError(it.error)
+//            }
         })
     }
 

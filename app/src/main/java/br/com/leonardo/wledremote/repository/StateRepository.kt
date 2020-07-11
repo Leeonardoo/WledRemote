@@ -5,30 +5,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.leonardo.wledremote.model.state.State
 import br.com.leonardo.wledremote.rest.api.ApiHandler
+import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
 import br.com.leonardo.wledremote.rest.api.ResultWrapper
 import br.com.leonardo.wledremote.rest.api.RetrofitConn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-sealed class StateStatus {
-    object Loading : StateStatus()
-    data class GenericError(val error: String) : StateStatus()
-    data class NetworkError(val error: String) : StateStatus()
-    data class Success(val state: State) : StateStatus()
-}
-
 class StateRepository {
     private val apiHandler = ApiHandler()
 
-    private val _sendStateResponse = MutableLiveData<StateStatus>()
-    val sendStateResponse: LiveData<StateStatus> = _sendStateResponse
+    private val _sendStateResponse = MutableLiveData<LocalResultWrapper<State>>()
+    val sendStateResponse: LiveData<LocalResultWrapper<State>> = _sendStateResponse
 
-    private val _stateResponse = MutableLiveData<StateStatus>()
-    val stateResponse: LiveData<StateStatus> = _stateResponse
+    private val _stateResponse = MutableLiveData<LocalResultWrapper<State>>()
+    val stateResponse: LiveData<LocalResultWrapper<State>> = _stateResponse
 
     suspend fun sendState(state: State) {
         withContext(Dispatchers.IO) {
-            _sendStateResponse.postValue(StateStatus.Loading)
+            _sendStateResponse.postValue(LocalResultWrapper.Loading)
 
             val response = apiHandler.handle(this) {
                 RetrofitConn.getInstance().stateEndpoint().sendState(state)
@@ -38,7 +32,7 @@ class StateRepository {
             when (response) {
                 is ResultWrapper.NetworkError -> {
                     Log.e("StateRepository", "Network Error while sending state!")
-                    _sendStateResponse.postValue(StateStatus.NetworkError("blank"))
+                    _sendStateResponse.postValue(LocalResultWrapper.NetworkError("blank"))
                 }
 
                 is ResultWrapper.GenericError -> {
@@ -46,12 +40,12 @@ class StateRepository {
                         "StateRepository",
                         "Generic Error while sending state! ${response.error.toString()}"
                     )
-                    _sendStateResponse.postValue(StateStatus.GenericError("blank"))
+                    _sendStateResponse.postValue(LocalResultWrapper.GenericError("blank"))
                 }
 
                 is ResultWrapper.Success -> {
                     Log.d("StateRepository", "State sent successfully!")
-                    _sendStateResponse.postValue(StateStatus.Success(response.value))
+                    _sendStateResponse.postValue(LocalResultWrapper.Success(response.value))
                     getState()
                 }
             }
@@ -60,7 +54,7 @@ class StateRepository {
 
     suspend fun getState() {
         withContext(Dispatchers.IO) {
-            _stateResponse.postValue(StateStatus.Loading)
+            _stateResponse.postValue(LocalResultWrapper.Loading)
 
             val response = apiHandler.handle(this) {
                 RetrofitConn.getInstance().stateEndpoint().getState()
@@ -70,7 +64,7 @@ class StateRepository {
             when (response) {
                 is ResultWrapper.NetworkError -> {
                     Log.e("StateRepository", "Network Error while getting state!")
-                    _stateResponse.postValue(StateStatus.NetworkError("blank"))
+                    _stateResponse.postValue(LocalResultWrapper.NetworkError("blank"))
                 }
 
                 is ResultWrapper.GenericError -> {
@@ -78,12 +72,12 @@ class StateRepository {
                         "StateRepository",
                         "Generic Error while getting state! ${response.error.toString()}"
                     )
-                    _stateResponse.postValue(StateStatus.GenericError("blank"))
+                    _stateResponse.postValue(LocalResultWrapper.GenericError("blank"))
                 }
 
                 is ResultWrapper.Success -> {
                     Log.d("StateRepository", "Getting state was successful!")
-                    _stateResponse.postValue(StateStatus.Success(response.value))
+                    _stateResponse.postValue(LocalResultWrapper.Success(response.value))
                 }
             }
         }

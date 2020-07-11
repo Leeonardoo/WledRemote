@@ -1,4 +1,4 @@
-package br.com.leonardo.wledremote.ui.fragment
+package br.com.leonardo.wledremote.ui.fragment.viewmodel
 
 import androidx.lifecycle.ViewModel
 

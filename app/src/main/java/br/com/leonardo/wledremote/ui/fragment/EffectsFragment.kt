@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.leonardo.wledremote.adapter.EffectsAdapter
 import br.com.leonardo.wledremote.databinding.FragmentEffectsBinding
-import br.com.leonardo.wledremote.repository.EffectStatus
+import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.EffectsViewModel
 import com.google.android.material.slider.Slider
@@ -41,8 +41,8 @@ class EffectsFragment : Fragment() {
 
     private fun setObservers() {
         mainViewModel.effects.observe(viewLifecycleOwner, Observer {
-            if (it is EffectStatus.Success) {
-                effects = it.effects
+            if (it is LocalResultWrapper.Success) {
+                effects = it.value
                 binding.effectsRecyclerView.adapter = EffectsAdapter(effects) { effect ->
                     mainViewModel.setEffect(effects.indexOf(effect))
                 }
