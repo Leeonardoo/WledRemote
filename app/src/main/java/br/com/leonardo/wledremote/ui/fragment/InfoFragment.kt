@@ -22,7 +22,6 @@ import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
 import br.com.leonardo.wledremote.util.convertMillisToDisplay
 
-
 class InfoFragment : Fragment() {
 
     private lateinit var binding: FragmentInfoBinding
@@ -66,15 +65,13 @@ class InfoFragment : Fragment() {
     }
 
     private fun setListeners() {
-        binding.infoSwipeLayout.setOnRefreshListener {
-            mainViewModel.getInfo()
-        }
+        binding.infoSwipeLayout.setOnRefreshListener { mainViewModel.getInfo() }
     }
 
     private fun setObservers() {
         mainViewModel.info.observe(viewLifecycleOwner, Observer { displayInfo(it) })
 
-        mainViewModel.infoLoading.observe(viewLifecycleOwner, Observer {
+        mainViewModel.isLoading.observe(viewLifecycleOwner, Observer {
             binding.infoSwipeLayout.isRefreshing = it
         })
     }

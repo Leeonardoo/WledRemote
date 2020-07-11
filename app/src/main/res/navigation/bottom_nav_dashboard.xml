@@ -17,5 +17,5 @@
     <fragment
         android:id="@+id/infoFragment"
         android:name="br.com.leonardo.wledremote.ui.fragment.InfoFragment"
-        android:label="InfoFragment" />
+        android:label="@string/info_fragment_label" />
 </navigation>

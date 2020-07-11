@@ -71,9 +71,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
-    //Animations and Motion
-    implementation 'com.airbnb.android:lottie:3.4.1'
-
     //Other
     implementation "com.github.skydoves:colorpickerview:2.1.6"
 

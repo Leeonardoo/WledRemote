@@ -3,6 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="br.com.leonardo.wledremote.ui.activity.viewmodel.SetupViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,6 +50,7 @@
             android:layout_marginTop="48dp"
             android:fontFamily="@font/manrope_bold"
             android:text="@string/connect"
+            android:visibility="@{viewModel.loadingInfo ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="gone"
+            android:visibility="@{viewModel.loadingInfo ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/connect_button"
             app:layout_constraintEnd_toEndOf="@+id/connect_button"
             app:layout_constraintStart_toStartOf="@+id/connect_button"

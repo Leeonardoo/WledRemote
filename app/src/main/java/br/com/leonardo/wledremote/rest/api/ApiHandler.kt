@@ -11,8 +11,7 @@ import java.io.IOException
 class ApiHandler {
 
     suspend fun <T> handle(
-        coroutineScope: CoroutineScope,
-        apiCall: suspend () -> T
+        coroutineScope: CoroutineScope, apiCall: suspend () -> T
     ): ResultWrapper<T> {
         return withContext(coroutineScope.coroutineContext) {
             try {

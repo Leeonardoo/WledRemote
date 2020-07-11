@@ -2,7 +2,6 @@ package br.com.leonardo.wledremote.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -25,50 +24,41 @@ class SetupActivity : AppCompatActivity() {
         setTheme(R.style.AppTheme)
 
         if (sharedPrefs.isIPConfigured())
-            startActivity(Intent(this, MainActivity::class.java))
+            navigateToMain()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_setup)
         binding.lifecycleOwner = this
-        binding.connectButton.setOnClickListener {
-            sharedPrefs.setConfigIP(ip = binding.ipText.text.toString())
-            viewModel.getDeviceInfo()
-        }
+        binding.viewModel = viewModel
+
+        setListeners()
         setObservers()
+    }
+
+    private fun setListeners() {
+        binding.connectButton.setOnClickListener {
+            sharedPrefs.setConfigIP(binding.ipText.text.toString())
+            viewModel.getInfo()
+        }
     }
 
     private fun setObservers() {
         viewModel.info.observe(this, Observer {
-//            when (it) {
-//                is InfoStatus.Success -> {
-            val intent = Intent(this, MainActivity::class.java)
             sharedPrefs.setIsIPConfigured(true)
-            startActivity(intent)
-            finish()
-//                }
-//
-//                is InfoStatus.Loading -> {
-//                    binding.connecting.visibility = View.VISIBLE
-//                    binding.connectButton.visibility = View.INVISIBLE
-//                }
-//
-//                is InfoStatus.GenericError -> showError(it.error)
-//                is InfoStatus.NetworkError -> showError(it.error)
-//            }
+            navigateToMain()
         })
+        viewModel.infoError.observe(this, Observer { showError(it) })
     }
 
-    private fun showError(text: String?) {
-        binding.connecting.visibility = View.GONE
-        binding.connectButton.visibility = View.VISIBLE
+    private fun navigateToMain() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 
-        val message =
-            if (text.isNullOrBlank()) getString(R.string.connection_failed_message)
-            else getString(R.string.connection_failed_message_extras, text)
-
+    private fun showError(text: String) {
         WledDialogUtil.infoDialog(
-            this,
-            getString(R.string.connection_failed),
-            message, getString(R.string.retry)
+            this, getString(R.string.connection_failed),
+            text, getString(R.string.ok)
         )
     }
 }
