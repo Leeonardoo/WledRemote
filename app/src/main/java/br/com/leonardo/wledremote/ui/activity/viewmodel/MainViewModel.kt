@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.model.info.Info
 import br.com.leonardo.wledremote.model.state.Segment
 import br.com.leonardo.wledremote.model.state.State
@@ -50,11 +51,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _sendStateError = ActionLiveData<String>()
     val sendStateError: LiveData<String> = _sendStateError
 
+    private val _stateError = MutableLiveData<String>()
+    val stateError: LiveData<String> = _stateError
+
+    private val _isError = MutableLiveData<Boolean>(false)
+    val isError: LiveData<Boolean> = _isError
+
     init {
-        getState()
-        getInfo()
         getPalettes()
         getEffects()
+        getInfo()
+        getState()
     }
 
     fun getInfo() = viewModelScope.launch {
@@ -65,22 +72,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 is LocalResultWrapper.Loading -> {
                 }
 
-                is LocalResultWrapper.Success -> _info.postValue(it.value)
-
-                is LocalResultWrapper.NetworkError -> {
-
+                is LocalResultWrapper.Success -> {
+                    setError(false)
+                    _info.postValue(it.value)
                 }
 
-                is LocalResultWrapper.GenericError -> {
+                is LocalResultWrapper.NetworkError -> setError(true, it.error)
 
-                }
+                is LocalResultWrapper.GenericError -> setError(true, it.error)
             }
 
             setLoading()
         }
     }
 
-    fun getState() = viewModelScope.launch {
+    private fun getState() = viewModelScope.launch {
         stateRepository.getState().collect {
             isStateLoading = it == LocalResultWrapper.Loading
 
@@ -89,23 +95,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
 
                 is LocalResultWrapper.Success -> {
-
+                    setError(false)
+                    _state.postValue(it.value)
                 }
 
-                is LocalResultWrapper.NetworkError -> {
+                is LocalResultWrapper.NetworkError -> setError(true, it.error)
 
-                }
-
-                is LocalResultWrapper.GenericError -> {
-
-                }
+                is LocalResultWrapper.GenericError -> setError(true, it.error)
             }
 
             setLoading()
         }
     }
 
-    fun getEffects() = viewModelScope.launch {
+    private fun getEffects() = viewModelScope.launch {
         infoRepository.getEffects().collect {
             isEffectsLoading = it == LocalResultWrapper.Loading
             when (it) {
@@ -113,23 +116,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
 
                 is LocalResultWrapper.Success -> {
+                    setError(false)
                     _effects.postValue(it.value)
                 }
 
-                is LocalResultWrapper.NetworkError -> {
+                is LocalResultWrapper.NetworkError -> setError(true, it.error)
 
-                }
-
-                is LocalResultWrapper.GenericError -> {
-
-                }
+                is LocalResultWrapper.GenericError -> setError(true, it.error)
             }
 
             setLoading()
         }
     }
 
-    fun getPalettes() = viewModelScope.launch {
+    private fun getPalettes() = viewModelScope.launch {
         infoRepository.getPalettes().collect {
             isPalettesLoading = it == LocalResultWrapper.Loading
 
@@ -138,16 +138,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
 
                 is LocalResultWrapper.Success -> {
+                    setError(false)
                     _palettes.postValue(it.value)
                 }
 
-                is LocalResultWrapper.NetworkError -> {
+                is LocalResultWrapper.NetworkError -> setError(true, it.error)
 
-                }
-
-                is LocalResultWrapper.GenericError -> {
-
-                }
+                is LocalResultWrapper.GenericError -> setError(true, it.error)
             }
 
             setLoading()
@@ -163,10 +160,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun setColor(colorArray: Int) {
+    fun setColor(colorArray: Int, checkedId: Int) {
         val rgbColor = mutableListOf(colorArray.red, colorArray.green, colorArray.blue)
-        //Hardcoded for the first one for now
-        val state = State(segments = listOf(Segment(colors = listOf(rgbColor))))
+        //Hardcoded for the first segment for now
+
+        //Empty lists won't make any difference for WLED, allowing us to control individually
+        val colors = when (checkedId) {
+            R.id.button1 -> listOf(rgbColor)
+            R.id.button2 -> listOf(listOf<Int>(), rgbColor)
+            R.id.button3 -> listOf(listOf(), listOf(), rgbColor)
+            else -> listOf(rgbColor)
+        }
+
+        val state = State(segments = listOf(Segment(colors = colors)))
         sendState(state)
     }
 
@@ -220,5 +226,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _isLoading.postValue(
             isInfoLoading && isPalettesLoading && isEffectsLoading && isInfoLoading
         )
+    }
+
+    private fun setError(value: Boolean, text: String = "") {
+        _stateError.postValue(text)
+        _isError.postValue(value)
     }
 }

@@ -34,7 +34,7 @@ class InfoRepository {
                         emit(
                             LocalResultWrapper.NetworkError(
                                 WledApplication.getAppContext()
-                                    .getString(R.string.info_network_error)
+                                    .getString(R.string.data_network_error)
                             )
                         )
                     }
@@ -44,7 +44,7 @@ class InfoRepository {
                         emit(
                             LocalResultWrapper.GenericError(
                                 WledApplication.getAppContext()
-                                    .getString(R.string.info_generic_error)
+                                    .getString(R.string.data_generic_error)
                             )
                         )
                     }
@@ -72,7 +72,7 @@ class InfoRepository {
                         emit(
                             LocalResultWrapper.NetworkError(
                                 WledApplication.getAppContext()
-                                    .getString(R.string.effects_network_error)
+                                    .getString(R.string.data_network_error)
                             )
                         )
                     }
@@ -85,7 +85,7 @@ class InfoRepository {
                         emit(
                             LocalResultWrapper.GenericError(
                                 WledApplication.getAppContext()
-                                    .getString(R.string.effects_unknown_error)
+                                    .getString(R.string.data_generic_error)
                             )
                         )
                     }
@@ -112,7 +112,7 @@ class InfoRepository {
                         emit(
                             LocalResultWrapper.NetworkError(
                                 WledApplication.getAppContext()
-                                    .getString(R.string.palettes_network_error)
+                                    .getString(R.string.data_network_error)
                             )
                         )
                     }
@@ -124,7 +124,7 @@ class InfoRepository {
                         emit(
                             LocalResultWrapper.GenericError(
                                 WledApplication.getAppContext()
-                                    .getString(R.string.palettes_generic_error)
+                                    .getString(R.string.data_generic_error)
                             )
                         )
                     }

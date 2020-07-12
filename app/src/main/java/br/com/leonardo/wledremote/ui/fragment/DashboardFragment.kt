@@ -12,7 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.FragmentDashboardBinding
-import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
@@ -41,6 +40,9 @@ class DashboardFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         sharedPrefs = SharedPrefsUtil.getInstance(requireContext())
 
+        binding.colorToggleGroup.clearChecked()
+        binding.colorToggleGroup.check(viewModel.checkedButton.value ?: R.id.button1)
+
         setListeners()
         setObservers()
     }
@@ -48,12 +50,18 @@ class DashboardFragment : Fragment() {
     private fun setListeners() {
         binding.dashboardSwipeLayout.setOnRefreshListener { mainViewModel.refreshAll() }
 
+        binding.dashboardRetry.setOnClickListener { mainViewModel.refreshAll() }
+
+        binding.colorToggleGroup.addOnButtonCheckedListener { _, checkedId, _ ->
+            viewModel.checkedButton.value = checkedId
+        }
+
         binding.colorPickerContainer.setOnClickListener {
             ColorPickerDialog.Builder(requireContext(), R.style.RoundedColorDialog).apply {
                 setTitle(getString(R.string.select_color))
                 setPositiveButton(getString(R.string.ok),
                     ColorEnvelopeListener { envelope, fromUser ->
-                        if (fromUser) mainViewModel.setColor(envelope.color)
+                        if (fromUser) mainViewModel.setColor(envelope.color, viewModel.checkedButton.value ?: R.id.button1)
                     })
                 setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
                 attachAlphaSlideBar(false)
@@ -87,10 +95,31 @@ class DashboardFragment : Fragment() {
             binding.paletteDropdownMenu.setOnItemClickListener { _, _, position, _ ->
                 mainViewModel.setPalette(position)
             }
+
+            if (mainViewModel.state.value != null) {
+                binding.paletteDropdownMenu.setText(
+                    mainViewModel.state.value?.segments?.first()?.paletteId?.let { it1 -> it[it1] },
+                    false
+                )
+            }
         })
 
         mainViewModel.state.observe(viewLifecycleOwner, Observer {
-            //Update ui status
+            viewModel.setError(false)
+            //Update ui
+
+            if (mainViewModel.palettes.value != null) {
+                binding.paletteDropdownMenu.setText(
+                    mainViewModel.state.value?.segments?.first()?.paletteId?.let { it1 ->
+                        mainViewModel.palettes.value?.get(it1)
+                    }, false
+                )
+            }
+            it.brightness?.let { it1 -> binding.brightnessSlider.value = it1.toFloat() }
+        })
+
+        mainViewModel.isError.observe(viewLifecycleOwner, Observer {
+            viewModel.setError(it, mainViewModel.stateError.value ?: "")
         })
     }
 }

@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/manrope_bold"
-                android:text="Power Usage"
+                tools:text="Power Usage"
                 android:textSize="16sp"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/manrope_medium"
-                android:text="1243mA"
+                tools:text="1243mA"
                 app:layout_constraintTop_toBottomOf="@id/info_item_icon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

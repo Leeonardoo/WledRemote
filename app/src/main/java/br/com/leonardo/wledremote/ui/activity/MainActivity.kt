@@ -9,9 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.ActivityMainBinding
@@ -86,21 +83,25 @@ class MainActivity : AppCompatActivity() {
 
         controller.observe(this, Observer { navController ->
             /*
-             * Awful hack to use our custom toolbar title, change it while navigating in the same
-             * navGraph and without showing the title two times, while also making the up
-             * action works
+             * A little, less awful hack to use our custom toolbar title, by setting it to null and
+             * setting setDisplayShowTitleEnabled to false. It happens every time the user navigates
+             * to another navGraph or inside the same navGraph, as we always remove and add a listener
              */
+
+            binding.toolbar.setupWithNavController(navController)
 
             val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
                 binding.toolbarTitle.text = destination.label
+                binding.toolbar.title = null
+                supportActionBar?.setDisplayShowTitleEnabled(false)
             }
 
             navController.removeOnDestinationChangedListener(listener)
             navController.addOnDestinationChangedListener(listener)
-            //setupActionBarWithNavController(this, navController)
-            binding.toolbar.setupWithNavController(navController)
-            //Margin set to integer max value to hide it
-            binding.toolbar.titleMarginStart = Int.MAX_VALUE
+            binding.toolbar.title = null
+            supportActionBar?.setDisplayShowTitleEnabled(false)
         })
+
+        currentNavController = controller
     }
 }

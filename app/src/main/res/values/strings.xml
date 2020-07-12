@@ -23,22 +23,17 @@
     <string name="palette">Palette</string>
     <string name="change_color">Change color</string>
     <string name="connecting">Connecting…</string>
-    <string name="palettes_network_error">Network error while trying to get palettes</string>
-    <string name="palettes_generic_error">Unknown error while trying to get palettes</string>
-    <string name="state_network_error">Network error while trying to get device state</string>
-    <string name="state_generic_error">Unknown error while trying to get device state</string>
+    <string name="data_network_error">Network error while trying to get data</string>
+    <string name="data_generic_error">Unknown error while trying to get data</string>
     <string name="send_state_network_error">An network error has occurred while trying to send new device state</string>
     <string name="send_state_generic_error">An unknown error has occurred while trying to send new device state</string>
 
     <!-- EffectsFragment -->
     <string name="speed">Speed</string>
     <string name="intensity">Intensity</string>
-    <string name="effects_network_error">Network error while trying to get effects</string>
-    <string name="effects_unknown_error">Unknown error while trying to get effects</string>
 
     <!-- InfoFragment -->
-    <string name="info_network_error">Network error while trying to get device info</string>
-    <string name="info_generic_error">Unknown error while trying to get device info</string>
+
 
     <!-- SetupActivity -->
     <string name="connection_failed">Connection failed</string>

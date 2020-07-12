@@ -39,6 +39,7 @@ class EffectsFragment : Fragment() {
 
     private fun setObservers() {
         mainViewModel.effects.observe(viewLifecycleOwner, Observer {
+            viewModel.setError(false)
             binding.effectsRecyclerView.adapter = EffectsAdapter(it) { effect ->
                 mainViewModel.setEffect(it.indexOf(effect))
             }
@@ -46,9 +47,15 @@ class EffectsFragment : Fragment() {
         })
 
         mainViewModel.isLoading.observe(viewLifecycleOwner, Observer { viewModel.setLoading(it) })
+
+        mainViewModel.isError.observe(viewLifecycleOwner, Observer {
+            viewModel.setError(it, mainViewModel.stateError.value ?: "")
+        })
     }
 
     private fun setListeners() {
+        binding.effectsRetry.setOnClickListener { mainViewModel.refreshAll() }
+
         binding.effectIntensitySlider.addOnSliderTouchListener(object :
             Slider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: Slider) {}

@@ -112,7 +112,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/white"
             android:elevation="16dp"
-            android:visibility="@{viewModel.isLoading ? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewModel.isVisible ? View.VISIBLE : View.GONE}"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             tools:listitem="@layout/row_effect" />
 
@@ -135,6 +135,43 @@
             android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
             app:layout_anchor="@id/effects_progress_bar"
             app:layout_anchorGravity="bottom" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.isError ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/error_outline_primary_24dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/manrope_medium"
+                android:text="@{viewModel.errorMessage}"
+                android:textAlignment="center"
+                tools:text="Some error" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/effects_retry"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/retry" />
+
+        </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

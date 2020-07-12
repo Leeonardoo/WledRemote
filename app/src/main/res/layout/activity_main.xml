@@ -20,6 +20,7 @@
             android:id="@+id/appbar_layout"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
+            android:animateLayoutChanges="false"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$Behavior">
 
             <com.google.android.material.appbar.MaterialToolbar
@@ -27,14 +28,16 @@
                 style="@style/Widget.MaterialComponents.Toolbar.Surface"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:animateLayoutChanges="false"
                 app:contentInsetStart="0dp"
-                app:menu="@menu/toolbar_menu">
+                app:contentInsetStartWithNavigation="0dp">
 
                 <TextView
                     android:id="@+id/toolbar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:animateLayoutChanges="false"
                     android:fontFamily="@font/manrope_bold"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -53,7 +56,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="56dp"
-            app:defaultNavHost="true"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

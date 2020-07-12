@@ -17,15 +17,14 @@ import br.com.leonardo.wledremote.adapter.InfoAdapter
 import br.com.leonardo.wledremote.databinding.FragmentInfoBinding
 import br.com.leonardo.wledremote.model.info.Info
 import br.com.leonardo.wledremote.model.ui.InfoItem
-import br.com.leonardo.wledremote.rest.api.ResultWrapper
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
-import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
+import br.com.leonardo.wledremote.ui.fragment.viewmodel.InfoViewModel
 import br.com.leonardo.wledremote.util.convertMillisToDisplay
 
 class InfoFragment : Fragment() {
 
     private lateinit var binding: FragmentInfoBinding
-    private val viewModel: DashboardViewModel by viewModels()
+    private val viewModel: InfoViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var adapter: InfoAdapter
 
@@ -35,6 +34,7 @@ class InfoFragment : Fragment() {
     ): View? {
         binding = FragmentInfoBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
         return binding.root
     }
 
@@ -56,7 +56,6 @@ class InfoFragment : Fragment() {
                 outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
             ) {
                 outRect.set(spacing, spacing, spacing, spacing)
-//                super.getItemOffsets(outRect, view, parent, state)
             }
         })
 
@@ -66,14 +65,24 @@ class InfoFragment : Fragment() {
 
     private fun setListeners() {
         binding.infoSwipeLayout.setOnRefreshListener { mainViewModel.getInfo() }
+
+        binding.infoRetry.setOnClickListener { mainViewModel.refreshAll() }
     }
 
     private fun setObservers() {
-        mainViewModel.info.observe(viewLifecycleOwner, Observer { displayInfo(it) })
+        mainViewModel.info.observe(viewLifecycleOwner, Observer {
+            viewModel.setError(false)
+            displayInfo(it)
+        })
 
         mainViewModel.isLoading.observe(viewLifecycleOwner, Observer {
             binding.infoSwipeLayout.isRefreshing = it
         })
+
+        mainViewModel.isError.observe(viewLifecycleOwner, Observer {
+            viewModel.setError(it, mainViewModel.stateError.value ?: "")
+        })
+
     }
 
     private fun displayInfo(info: Info) {
