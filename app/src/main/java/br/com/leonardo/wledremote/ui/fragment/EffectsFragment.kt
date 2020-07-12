@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.leonardo.wledremote.adapter.EffectsAdapter
 import br.com.leonardo.wledremote.databinding.FragmentEffectsBinding
-import br.com.leonardo.wledremote.repository.EffectStatus
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.EffectsViewModel
 import com.google.android.material.slider.Slider
@@ -21,7 +20,6 @@ class EffectsFragment : Fragment() {
     private lateinit var binding: FragmentEffectsBinding
     private val viewModel: EffectsViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
-    private var effects: List<String> = listOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,18 +39,18 @@ class EffectsFragment : Fragment() {
 
     private fun setObservers() {
         mainViewModel.effects.observe(viewLifecycleOwner, Observer {
-            if (it is EffectStatus.Success) {
-                effects = it.effects
-                binding.effectsRecyclerView.adapter = EffectsAdapter(effects) { effect ->
-                    mainViewModel.setEffect(effects.indexOf(effect))
-                }
-                binding.effectsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            binding.effectsRecyclerView.adapter = EffectsAdapter(it) { effect ->
+                mainViewModel.setEffect(it.indexOf(effect))
             }
+            binding.effectsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         })
+
+        mainViewModel.isLoading.observe(viewLifecycleOwner, Observer { viewModel.setLoading(it) })
     }
 
     private fun setListeners() {
-        binding.effectIntensitySlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+        binding.effectIntensitySlider.addOnSliderTouchListener(object :
+            Slider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: Slider) {}
             override fun onStopTrackingTouch(slider: Slider) {
                 mainViewModel.setEffectAttr(intensity = binding.effectIntensitySlider.value.toInt())

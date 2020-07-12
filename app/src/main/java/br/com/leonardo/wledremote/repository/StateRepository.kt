@@ -1,91 +1,104 @@
 package br.com.leonardo.wledremote.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import br.com.leonardo.wledremote.R
+import br.com.leonardo.wledremote.WledApplication
 import br.com.leonardo.wledremote.model.state.State
 import br.com.leonardo.wledremote.rest.api.ApiHandler
+import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
 import br.com.leonardo.wledremote.rest.api.ResultWrapper
 import br.com.leonardo.wledremote.rest.api.RetrofitConn
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
 
-sealed class StateStatus {
-    object Loading : StateStatus()
-    data class GenericError(val error: String) : StateStatus()
-    data class NetworkError(val error: String) : StateStatus()
-    data class Success(val state: State) : StateStatus()
-}
-
+@ExperimentalCoroutinesApi
 class StateRepository {
     private val apiHandler = ApiHandler()
+    private val tag = ::InfoRepository.name
 
-    private val _sendStateResponse = MutableLiveData<StateStatus>()
-    val sendStateResponse: LiveData<StateStatus> = _sendStateResponse
+    fun sendState(state: State): Flow<LocalResultWrapper<State>> {
+        return flow {
+            withContext(Dispatchers.IO) {
+                val response = apiHandler.handle(this) {
+                    RetrofitConn.getInstance().stateEndpoint().sendState(state)
+                }
 
-    private val _stateResponse = MutableLiveData<StateStatus>()
-    val stateResponse: LiveData<StateStatus> = _stateResponse
+                when (response) {
+                    is ResultWrapper.NetworkError -> {
+                        Log.e(tag, "Network Error while sending state!")
+                        emit(
+                            LocalResultWrapper.NetworkError(
+                                WledApplication.getAppContext().getString(
+                                    R.string.send_state_network_error
+                                )
+                            )
+                        )
+                    }
 
-    suspend fun sendState(state: State) {
-        withContext(Dispatchers.IO) {
-            _sendStateResponse.postValue(StateStatus.Loading)
+                    is ResultWrapper.GenericError -> {
+                        Log.e(
+                            tag, "Error while sending state! ${response.error.toString()}"
+                        )
+                        emit(
+                            LocalResultWrapper.GenericError(
+                                WledApplication.getAppContext()
+                                    .getString(R.string.send_state_generic_error)
+                            )
+                        )
+                    }
 
-            val response = apiHandler.handle(this) {
-                RetrofitConn.getInstance().stateEndpoint().sendState(state)
+                    is ResultWrapper.Success -> {
+                        Log.d(tag, "State sent successfully!")
+                        emit(LocalResultWrapper.Success(response.value))
+                        getState()
+                    }
+                }
             }
-
-            //TODO add error messages
-            when (response) {
-                is ResultWrapper.NetworkError -> {
-                    Log.e("StateRepository", "Network Error while sending state!")
-                    _sendStateResponse.postValue(StateStatus.NetworkError("blank"))
-                }
-
-                is ResultWrapper.GenericError -> {
-                    Log.e(
-                        "StateRepository",
-                        "Generic Error while sending state! ${response.error.toString()}"
-                    )
-                    _sendStateResponse.postValue(StateStatus.GenericError("blank"))
-                }
-
-                is ResultWrapper.Success -> {
-                    Log.d("StateRepository", "State sent successfully!")
-                    _sendStateResponse.postValue(StateStatus.Success(response.value))
-                    getState()
-                }
-            }
-        }
+        }.flowOn(Dispatchers.IO).onStart { emit(LocalResultWrapper.Loading) }
     }
 
-    suspend fun getState() {
-        withContext(Dispatchers.IO) {
-            _stateResponse.postValue(StateStatus.Loading)
+    fun getState(): Flow<LocalResultWrapper<State>> {
+        return flow {
+            withContext(Dispatchers.IO) {
+                val response = apiHandler.handle(this) {
+                    RetrofitConn.getInstance().stateEndpoint().getState()
+                }
 
-            val response = apiHandler.handle(this) {
-                RetrofitConn.getInstance().stateEndpoint().getState()
+                //TODO add error messages
+                when (response) {
+                    is ResultWrapper.NetworkError -> {
+                        Log.e(tag, "Network Error while getting state!")
+                        emit(
+                            LocalResultWrapper.NetworkError(
+                                WledApplication.getAppContext()
+                                    .getString(R.string.state_network_error)
+                            )
+                        )
+                    }
+
+                    is ResultWrapper.GenericError -> {
+                        Log.e(
+                            tag, "Error while getting state! ${response.error.toString()}"
+                        )
+                        emit(
+                            LocalResultWrapper.GenericError(
+                                WledApplication.getAppContext()
+                                    .getString(R.string.state_generic_error)
+                            )
+                        )
+                    }
+
+                    is ResultWrapper.Success -> {
+                        Log.d(tag, "Getting state was successful!")
+                        emit(LocalResultWrapper.Success(response.value))
+                    }
+                }
             }
-
-            //TODO add error messages
-            when (response) {
-                is ResultWrapper.NetworkError -> {
-                    Log.e("StateRepository", "Network Error while getting state!")
-                    _stateResponse.postValue(StateStatus.NetworkError("blank"))
-                }
-
-                is ResultWrapper.GenericError -> {
-                    Log.e(
-                        "StateRepository",
-                        "Generic Error while getting state! ${response.error.toString()}"
-                    )
-                    _stateResponse.postValue(StateStatus.GenericError("blank"))
-                }
-
-                is ResultWrapper.Success -> {
-                    Log.d("StateRepository", "Getting state was successful!")
-                    _stateResponse.postValue(StateStatus.Success(response.value))
-                }
-            }
-        }
+        }.flowOn(Dispatchers.IO).onStart { emit(LocalResultWrapper.Loading) }
     }
 }

@@ -12,12 +12,10 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.FragmentDashboardBinding
-import br.com.leonardo.wledremote.repository.PaletteStatus
-import br.com.leonardo.wledremote.repository.StateStatus
+import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
-import com.airbnb.lottie.LottieDrawable
 import com.google.android.material.slider.Slider
 import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
@@ -41,7 +39,6 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.dashViewmodel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.statusAnimationView.repeatCount = LottieDrawable.INFINITE
         sharedPrefs = SharedPrefsUtil.getInstance(requireContext())
 
         setListeners()
@@ -49,6 +46,8 @@ class DashboardFragment : Fragment() {
     }
 
     private fun setListeners() {
+        binding.dashboardSwipeLayout.setOnRefreshListener { mainViewModel.refreshAll() }
+
         binding.colorPickerContainer.setOnClickListener {
             ColorPickerDialog.Builder(requireContext(), R.style.RoundedColorDialog).apply {
                 setTitle(getString(R.string.select_color))
@@ -76,31 +75,22 @@ class DashboardFragment : Fragment() {
     }
 
     private fun setObservers() {
+        mainViewModel.isLoading.observe(viewLifecycleOwner, Observer {
+            binding.dashboardSwipeLayout.isRefreshing = it
+        })
+
         mainViewModel.palettes.observe(viewLifecycleOwner, Observer {
-            if (it is PaletteStatus.Success) {
-                val adapter = ArrayAdapter<String>(
-                    requireContext(), R.layout.support_simple_spinner_dropdown_item,
-                    it.palettes
-                )
-                binding.paletteDropdownMenu.setAdapter(adapter)
-                binding.paletteDropdownMenu.setOnItemClickListener { _, _, position, _ ->
-                    mainViewModel.setPalette(position)
-                }
+            val adapter = ArrayAdapter(
+                requireContext(), R.layout.support_simple_spinner_dropdown_item, it
+            )
+            binding.paletteDropdownMenu.setAdapter(adapter)
+            binding.paletteDropdownMenu.setOnItemClickListener { _, _, position, _ ->
+                mainViewModel.setPalette(position)
             }
         })
 
-        mainViewModel.currentState.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is StateStatus.Success -> {
-                    binding.statusAnimationView.repeatCount = 0
-                    binding.statusAnimationView.apply {
-                        setAnimation(R.raw.done)
-                        playAnimation()
-                    }
-                }
-
-                //Show errors
-            }
+        mainViewModel.state.observe(viewLifecycleOwner, Observer {
+            //Update ui status
         })
     }
 }

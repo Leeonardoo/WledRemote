@@ -7,8 +7,7 @@ import br.com.leonardo.wledremote.databinding.RowEffectBinding
 
 class EffectsAdapter(
     private val effects: List<String>?, private val clickListener: (String) -> Unit
-) :
-    RecyclerView.Adapter<EffectsAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<EffectsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)

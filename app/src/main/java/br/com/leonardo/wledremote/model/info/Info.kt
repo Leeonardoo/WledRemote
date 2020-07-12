@@ -25,7 +25,7 @@ data class Info(
     val freeHeap: Int? = null,
 
     @Json(name = "uptime")
-    val uptime: Int? = null,
+    val uptime: Long? = null,
 
     @Json(name = "vid")
     val buildId: Int? = null,

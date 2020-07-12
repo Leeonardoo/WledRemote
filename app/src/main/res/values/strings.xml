@@ -6,6 +6,7 @@
 
     <!-- Fragment Labels -->
     <string name="dashboard_label">Dashboard</string>
+    <string name="info_fragment_label">Device Info</string>
     <string name="settings_label">Settings</string>
     <string name="effects_label">Effects</string>
     <string name="power">Power</string>
@@ -22,16 +23,29 @@
     <string name="palette">Palette</string>
     <string name="change_color">Change color</string>
     <string name="connecting">Connecting…</string>
+    <string name="palettes_network_error">Network error while trying to get palettes</string>
+    <string name="palettes_generic_error">Unknown error while trying to get palettes</string>
+    <string name="state_network_error">Network error while trying to get device state</string>
+    <string name="state_generic_error">Unknown error while trying to get device state</string>
+    <string name="send_state_network_error">An network error has occurred while trying to send new device state</string>
+    <string name="send_state_generic_error">An unknown error has occurred while trying to send new device state</string>
 
     <!-- EffectsFragment -->
     <string name="speed">Speed</string>
     <string name="intensity">Intensity</string>
+    <string name="effects_network_error">Network error while trying to get effects</string>
+    <string name="effects_unknown_error">Unknown error while trying to get effects</string>
+
+    <!-- InfoFragment -->
+    <string name="info_network_error">Network error while trying to get device info</string>
+    <string name="info_generic_error">Unknown error while trying to get device info</string>
 
     <!-- SetupActivity -->
     <string name="connection_failed">Connection failed</string>
-    <string name="connection_failed_message">An error happened while trying to connect. Check your connection and your IP, then try again</string>
-    <string name="connection_failed_message_extras">An error happened while trying to connect. The response was %s</string>
     <string name="setup_device_ip">Device IP</string>
     <string name="setup_title">Ready to start?</string>
     <string name="setup_subtitle">Enter your controller IP to continue</string>
+    <string name="info_setup_network_error">A network error occurred while trying to get device info. Check your connection on both devices and try again</string>
+    <string name="info_setup_unknown_error">An unknown error occurred while trying to get device info. Try rebooting the device and try again</string>
+    <string name="effects_loading">Loading effects</string>
 </resources>

@@ -47,7 +47,6 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <!-- The 56dp marginBottom is equals to the BottomNav height -->
-        <!-- TODO: fix bottom navigation going above the keyboard -->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"

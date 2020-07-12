@@ -9,10 +9,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.ActivityMainBinding
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.util.setupWithNavController
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,34 +34,13 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null)
             setupBottomNavigationBar()
+
+        setObservers()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState!!)
         setupBottomNavigationBar()
-    }
-
-    private fun setupBottomNavigationBar() {
-        val bottomNavigationView = binding.bottomNav
-        val navGraphIds = listOf(
-            R.navigation.bottom_nav_dashboard,
-            R.navigation.bottom_nav_effects,
-            R.navigation.bottom_nav_settings
-        )
-
-        val controller = bottomNavigationView.setupWithNavController(
-            navGraphIds = navGraphIds,
-            fragmentManager = supportFragmentManager,
-            containerId = R.id.nav_host_fragment,
-            intent = intent
-        )
-
-        controller.observe(this, Observer { navController ->
-//            setupActionBarWithNavController(navController)
-            binding.toolbarTitle.text = navController.currentDestination?.label
-        })
-
-        currentNavController = controller
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -75,5 +59,48 @@ class MainActivity : AppCompatActivity() {
         }
 
         else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun setObservers() {
+        viewModel.sendStateError.observe(this, Observer {
+            Snackbar.make(binding.navHostFragment, it, Snackbar.LENGTH_LONG).apply {
+                anchorView = binding.bottomNav
+            }.show()
+        })
+    }
+
+    private fun setupBottomNavigationBar() {
+        val bottomNavigationView = binding.bottomNav
+        val navGraphIds = listOf(
+            R.navigation.bottom_nav_dashboard,
+            R.navigation.bottom_nav_effects,
+            R.navigation.bottom_nav_settings
+        )
+
+        val controller = bottomNavigationView.setupWithNavController(
+            navGraphIds = navGraphIds,
+            fragmentManager = supportFragmentManager,
+            containerId = R.id.nav_host_fragment,
+            intent = intent
+        )
+
+        controller.observe(this, Observer { navController ->
+            /*
+             * Awful hack to use our custom toolbar title, change it while navigating in the same
+             * navGraph and without showing the title two times, while also making the up
+             * action works
+             */
+
+            val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
+                binding.toolbarTitle.text = destination.label
+            }
+
+            navController.removeOnDestinationChangedListener(listener)
+            navController.addOnDestinationChangedListener(listener)
+            //setupActionBarWithNavController(this, navController)
+            binding.toolbar.setupWithNavController(navController)
+            //Margin set to integer max value to hide it
+            binding.toolbar.titleMarginStart = Int.MAX_VALUE
+        })
     }
 }

@@ -1,130 +1,140 @@
 package br.com.leonardo.wledremote.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import br.com.leonardo.wledremote.R
+import br.com.leonardo.wledremote.WledApplication
 import br.com.leonardo.wledremote.model.info.Info
 import br.com.leonardo.wledremote.rest.api.ApiHandler
+import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
 import br.com.leonardo.wledremote.rest.api.ResultWrapper
 import br.com.leonardo.wledremote.rest.api.RetrofitConn
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
 
-sealed class InfoStatus {
-    object Loading : InfoStatus()
-    data class GenericError(val error: String) : InfoStatus()
-    data class NetworkError(val error: String) : InfoStatus()
-    data class Success(val info: Info) : InfoStatus()
-}
-
-sealed class EffectStatus {
-    object Loading : EffectStatus()
-    data class GenericError(val error: String) : EffectStatus()
-    data class NetworkError(val error: String) : EffectStatus()
-    data class Success(val effects: List<String>) : EffectStatus()
-}
-
-sealed class PaletteStatus {
-    object Loading : PaletteStatus()
-    data class GenericError(val error: String) : PaletteStatus()
-    data class NetworkError(val error: String) : PaletteStatus()
-    data class Success(val palettes: List<String>) : PaletteStatus()
-}
-
+@ExperimentalCoroutinesApi
 class InfoRepository {
     private val apiHandler = ApiHandler()
     private val tag = ::InfoRepository.name
 
-    private val _infoResponse = MutableLiveData<InfoStatus>()
-    val infoResponse: LiveData<InfoStatus> = _infoResponse
+    fun getInfo(): Flow<LocalResultWrapper<Info>> {
+        return flow {
+            withContext(Dispatchers.IO) {
+                val response = apiHandler.handle(this) {
+                    RetrofitConn.getInstance().infoEndpoint().getInfo()
+                }
 
-    private val _effectResponse = MutableLiveData<EffectStatus>()
-    val effectResponse: LiveData<EffectStatus> = _effectResponse
+                when (response) {
+                    is ResultWrapper.NetworkError -> {
+                        Log.e(tag, "Network Error while getting info!")
+                        emit(
+                            LocalResultWrapper.NetworkError(
+                                WledApplication.getAppContext()
+                                    .getString(R.string.info_network_error)
+                            )
+                        )
+                    }
 
-    private val _paletteResponse = MutableLiveData<PaletteStatus>()
-    val paletteResponse: LiveData<PaletteStatus> = _paletteResponse
+                    is ResultWrapper.GenericError -> {
+                        Log.e(tag, "Generic Error while getting info! ${response.error.toString()}")
+                        emit(
+                            LocalResultWrapper.GenericError(
+                                WledApplication.getAppContext()
+                                    .getString(R.string.info_generic_error)
+                            )
+                        )
+                    }
 
-    suspend fun getInfo() {
-        withContext(Dispatchers.IO) {
-            _infoResponse.postValue(InfoStatus.Loading)
-
-            val response = apiHandler.handle(this) {
-                RetrofitConn.getInstance().infoEndpoint().getInfo()
+                    is ResultWrapper.Success -> {
+                        Log.d(tag, "Got info successfully!")
+                        emit(LocalResultWrapper.Success(response.value))
+                    }
+                }
             }
-
-            //TODO add error messages
-            when (response) {
-                is ResultWrapper.NetworkError -> {
-                    Log.e(tag, "Network Error while getting info!")
-                    _infoResponse.postValue(InfoStatus.NetworkError("blank"))
-                }
-
-                is ResultWrapper.GenericError -> {
-                    Log.e(tag, "Generic Error while getting info! ${response.error.toString()}")
-                    _infoResponse.postValue(InfoStatus.GenericError("blank"))
-                }
-
-                is ResultWrapper.Success -> {
-                    Log.d(tag, "Got info successfully!")
-                    _infoResponse.postValue(InfoStatus.Success(response.value))
-                }
-            }
-        }
+        }.flowOn(Dispatchers.IO).onStart { emit(LocalResultWrapper.Loading) }
     }
 
-    suspend fun getEffects() {
-        withContext(Dispatchers.IO) {
-            _effectResponse.postValue(EffectStatus.Loading)
+    fun getEffects(): Flow<LocalResultWrapper<List<String>>> {
+        return flow {
+            withContext(Dispatchers.IO) {
+                val response = apiHandler.handle(this) {
+                    RetrofitConn.getInstance().infoEndpoint().getEffects()
+                }
 
-            val response = apiHandler.handle(this) {
-                RetrofitConn.getInstance().infoEndpoint().getEffects()
+                //TODO add error messages
+                when (response) {
+                    is ResultWrapper.NetworkError -> {
+                        Log.e(tag, "Network Error while getting effects!")
+                        emit(
+                            LocalResultWrapper.NetworkError(
+                                WledApplication.getAppContext()
+                                    .getString(R.string.effects_network_error)
+                            )
+                        )
+                    }
+
+                    is ResultWrapper.GenericError -> {
+                        Log.e(
+                            tag,
+                            "Error while getting effects! ${response.error.toString()}"
+                        )
+                        emit(
+                            LocalResultWrapper.GenericError(
+                                WledApplication.getAppContext()
+                                    .getString(R.string.effects_unknown_error)
+                            )
+                        )
+                    }
+
+                    is ResultWrapper.Success -> {
+                        Log.d(tag, "Got effects successfully!")
+                        emit(LocalResultWrapper.Success(response.value))
+                    }
+                }
             }
-
-            //TODO add error messages
-            when (response) {
-                is ResultWrapper.NetworkError -> {
-                    Log.e(tag, "Network Error while getting effects!")
-                    _effectResponse.postValue(EffectStatus.NetworkError("blank"))
-                }
-
-                is ResultWrapper.GenericError -> {
-                    Log.e(tag, "Generic Error while getting effects! ${response.error.toString()}")
-                    _effectResponse.postValue(EffectStatus.GenericError("blank"))
-                }
-
-                is ResultWrapper.Success -> {
-                    Log.d(tag, "Got effects successfully!")
-                    _effectResponse.postValue(EffectStatus.Success(response.value))
-                }
-            }
-        }
+        }.flowOn(Dispatchers.IO).onStart { emit(LocalResultWrapper.Loading) }
     }
 
-    suspend fun getPalettes() {
-        withContext(Dispatchers.IO) {
-            _paletteResponse.postValue(PaletteStatus.Loading)
+    fun getPalettes(): Flow<LocalResultWrapper<List<String>>> {
+        return flow {
+            withContext(Dispatchers.IO) {
+                val response = apiHandler.handle(this) {
+                    RetrofitConn.getInstance().infoEndpoint().getPalettes()
+                }
 
-            val response = apiHandler.handle(this) {
-                RetrofitConn.getInstance().infoEndpoint().getPalettes()
+                when (response) {
+                    is ResultWrapper.NetworkError -> {
+                        Log.e(tag, "Network Error while getting palettes!")
+                        emit(
+                            LocalResultWrapper.NetworkError(
+                                WledApplication.getAppContext()
+                                    .getString(R.string.palettes_network_error)
+                            )
+                        )
+                    }
+
+                    is ResultWrapper.GenericError -> {
+                        Log.e(
+                            tag, "Error while getting palettes! ${response.error.toString()}"
+                        )
+                        emit(
+                            LocalResultWrapper.GenericError(
+                                WledApplication.getAppContext()
+                                    .getString(R.string.palettes_generic_error)
+                            )
+                        )
+                    }
+
+                    is ResultWrapper.Success -> {
+                        Log.d(tag, "Got palettes successfully!")
+                        emit(LocalResultWrapper.Success(response.value))
+                    }
+                }
             }
-
-            //TODO add error messages
-            when (response) {
-                is ResultWrapper.NetworkError -> {
-                    Log.e(tag, "Network Error while getting palettes!")
-                    _paletteResponse.postValue(PaletteStatus.NetworkError("blank"))
-                }
-
-                is ResultWrapper.GenericError -> {
-                    Log.e(tag, "Generic Error while getting palettes! ${response.error.toString()}")
-                    _paletteResponse.postValue(PaletteStatus.GenericError("blank"))
-                }
-
-                is ResultWrapper.Success -> {
-                    Log.d(tag, "Got palettes successfully!")
-                    _paletteResponse.postValue(PaletteStatus.Success(response.value))
-                }
-            }
-        }
+        }.flowOn(Dispatchers.IO).onStart { emit(LocalResultWrapper.Loading) }
     }
 }
