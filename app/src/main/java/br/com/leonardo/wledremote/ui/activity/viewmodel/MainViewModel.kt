@@ -90,9 +90,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 is LocalResultWrapper.Loading -> {
                 }
 
-                is LocalResultWrapper.Success -> {
-
-                }
+                is LocalResultWrapper.Success -> _state.postValue(it.value!!)
 
                 is LocalResultWrapper.NetworkError -> {
 
@@ -114,9 +112,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 is LocalResultWrapper.Loading -> {
                 }
 
-                is LocalResultWrapper.Success -> {
-                    _effects.postValue(it.value!!)
-                }
+                is LocalResultWrapper.Success -> _effects.postValue(it.value!!)
 
                 is LocalResultWrapper.NetworkError -> {
 
@@ -139,9 +135,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 is LocalResultWrapper.Loading -> {
                 }
 
-                is LocalResultWrapper.Success -> {
-                    _palettes.postValue(it.value!!)
-                }
+                is LocalResultWrapper.Success -> _palettes.postValue(it.value!!)
 
                 is LocalResultWrapper.NetworkError -> {
 
@@ -165,11 +159,33 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun setColor(colorArray: Int) {
-        val rgbColor = mutableListOf(colorArray.red, colorArray.green, colorArray.blue)
-        //Hardcoded for the first one for now
-        val state = State(segments = listOf(Segment(colors = listOf(rgbColor))))
-        sendState(state)
+    fun setColor(colorInt: Int, colorIndex: Int) {
+        val rgbColor = mutableListOf(colorInt.red, colorInt.green, colorInt.blue)
+
+        // Update the color based on the index from the last segment that is selected
+        val oldState = state.value
+        var newState = State(segments = listOf(Segment(colors = listOf(rgbColor)))) // In case the default one was not set
+        if (oldState != null) {
+            val segments = oldState.segments?.toMutableList()
+
+            segments?.forEachIndexed {index, segment ->
+                if (segment?.selected == true) {
+                    val colors = segment.colors?.toMutableList()
+                    colors?.set(colorIndex, rgbColor)
+                    val updateSegment = segment.copy(colors = colors)
+                    segments[index] = updateSegment
+                }
+            }
+
+            newState = State(segments = segments) // Will send updated segments
+
+            // This will now make sure that the value is updated with the correct information in
+            // our local device  so that our views can be updated with our local changes
+            val updatedState = oldState.copy(segments = segments)
+            _state.postValue(updatedState)
+        }
+
+        sendState(newState)
     }
 
     fun setBrightness(brightness: Int) {

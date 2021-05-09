@@ -5,17 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.annotation.ColorInt
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.FragmentDashboardBinding
-import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
+import br.com.leonardo.wledremote.model.state.Segment
+import br.com.leonardo.wledremote.model.state.State
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.slider.Slider
 import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
@@ -51,11 +53,18 @@ class DashboardFragment : Fragment() {
         binding.dashboardSwipeLayout.setOnRefreshListener { mainViewModel.refreshAll() }
 
         binding.colorPickerContainer.setOnClickListener {
+            val buttonId = binding.buttonToggleGroup.checkedButtonId
+            val button = binding.buttonToggleGroup.findViewById<MaterialButton>(buttonId)
+            val colorIndex = binding.buttonToggleGroup.indexOfChild(button)
+
             ColorPickerDialog.Builder(requireContext(), R.style.RoundedColorDialog).apply {
                 setTitle(getString(R.string.select_color))
                 setPositiveButton(getString(R.string.ok),
                     ColorEnvelopeListener { envelope, fromUser ->
-                        if (fromUser) mainViewModel.setColor(envelope.color)
+                        if (fromUser) {
+                            binding.currentColor.setColorFilter(envelope.color)
+                            mainViewModel.setColor(envelope.color, colorIndex)
+                        }
                     })
                 setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
                 attachAlphaSlideBar(false)
@@ -73,6 +82,21 @@ class DashboardFragment : Fragment() {
         binding.statusContainer.setOnClickListener {
             val directions = DashboardFragmentDirections.actionDashboardFragmentToInfoFragment()
             findNavController().navigate(directions)
+        }
+
+        binding.buttonToggleGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            if (isChecked && checkedId != -1) {
+                val button = group.findViewById<MaterialButton>(checkedId)
+                val index = group.indexOfChild(button)
+                if (index != -1 && getLastSegment(mainViewModel.state.value) != null) {
+                    val segment = getLastSegment(mainViewModel.state.value)
+                    val color = segment!!.colors?.get(index)
+                    if (color != null) {
+                        val colorInt = parseIntArrayToColorInt(color)
+                        binding.currentColor.setColorFilter(colorInt)
+                    }
+                }
+            }
         }
     }
 
@@ -93,6 +117,25 @@ class DashboardFragment : Fragment() {
 
         mainViewModel.state.observe(viewLifecycleOwner, {
             //Update ui status
+            if (it.brightness != null) binding.brightnessSlider.value = it.brightness.toFloat()
+            val checkId = binding.buttonToggleGroup.checkedButtonId
+            if (checkId != -1) {
+                binding.buttonToggleGroup.clearChecked()
+                binding.buttonToggleGroup.check(checkId)
+            }
         })
+    }
+
+    private fun getLastSegment(state : State?): Segment? {
+        return state?.segments?.last { segment -> segment?.selected == true }
+    }
+
+    @ColorInt
+    fun parseIntArrayToColorInt(array: List<Int?>): Int {
+        val alpha = (0xff).shl(24)
+        val red = ((array[0] ?: 0) and 0xff).shl(16)
+        val green = ((array[1] ?: 0) and 0xff).shl(8)
+        val blue = ((array[2] ?: 0) and 0xff).shl(0)
+        return alpha or red or green or blue
     }
 }

@@ -6,5 +6,4 @@ import br.com.leonardo.wledremote.util.SharedPrefsUtil
 
 class DashboardViewModel(application: Application) : AndroidViewModel(application) {
     private val sharedPrefsUtil = SharedPrefsUtil.getInstance(application)
-
 }
