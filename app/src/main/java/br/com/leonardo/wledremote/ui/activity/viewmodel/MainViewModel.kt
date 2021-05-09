@@ -16,10 +16,12 @@ import br.com.leonardo.wledremote.repository.StateRepository
 import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
 import br.com.leonardo.wledremote.util.ActionLiveData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@ExperimentalCoroutinesApi
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val stateRepository = StateRepository()
     private val infoRepository = InfoRepository()
@@ -65,7 +67,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 is LocalResultWrapper.Loading -> {
                 }
 
-                is LocalResultWrapper.Success -> _info.postValue(it.value)
+                is LocalResultWrapper.Success -> _info.postValue(it.value!!)
 
                 is LocalResultWrapper.NetworkError -> {
 
@@ -113,7 +115,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
 
                 is LocalResultWrapper.Success -> {
-                    _effects.postValue(it.value)
+                    _effects.postValue(it.value!!)
                 }
 
                 is LocalResultWrapper.NetworkError -> {
@@ -129,7 +131,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getPalettes() = viewModelScope.launch {
+    private fun getPalettes() = viewModelScope.launch {
         infoRepository.getPalettes().collect {
             isPalettesLoading = it == LocalResultWrapper.Loading
 
@@ -138,7 +140,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
 
                 is LocalResultWrapper.Success -> {
-                    _palettes.postValue(it.value)
+                    _palettes.postValue(it.value!!)
                 }
 
                 is LocalResultWrapper.NetworkError -> {

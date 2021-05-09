@@ -18,7 +18,9 @@ import br.com.leonardo.wledremote.databinding.ActivityMainBinding
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.util.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class MainActivity : AppCompatActivity() {
 
     private var currentNavController: LiveData<NavController>? = null
@@ -38,8 +40,8 @@ class MainActivity : AppCompatActivity() {
         setObservers()
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        super.onRestoreInstanceState(savedInstanceState!!)
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
         setupBottomNavigationBar()
     }
 
@@ -62,7 +64,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setObservers() {
-        viewModel.sendStateError.observe(this, Observer {
+        viewModel.sendStateError.observe(this, {
             Snackbar.make(binding.navHostFragment, it, Snackbar.LENGTH_LONG).apply {
                 anchorView = binding.bottomNav
             }.show()
@@ -84,7 +86,7 @@ class MainActivity : AppCompatActivity() {
             intent = intent
         )
 
-        controller.observe(this, Observer { navController ->
+        controller.observe(this, { navController ->
             /*
              * Awful hack to use our custom toolbar title, change it while navigating in the same
              * navGraph and without showing the title two times, while also making the up

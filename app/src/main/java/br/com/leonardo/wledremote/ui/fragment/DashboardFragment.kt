@@ -19,7 +19,9 @@ import br.com.leonardo.wledremote.util.SharedPrefsUtil
 import com.google.android.material.slider.Slider
 import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class DashboardFragment : Fragment() {
 
     private lateinit var binding: FragmentDashboardBinding
@@ -30,7 +32,7 @@ class DashboardFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentDashboardBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -75,11 +77,11 @@ class DashboardFragment : Fragment() {
     }
 
     private fun setObservers() {
-        mainViewModel.isLoading.observe(viewLifecycleOwner, Observer {
+        mainViewModel.isLoading.observe(viewLifecycleOwner, {
             binding.dashboardSwipeLayout.isRefreshing = it
         })
 
-        mainViewModel.palettes.observe(viewLifecycleOwner, Observer {
+        mainViewModel.palettes.observe(viewLifecycleOwner, {
             val adapter = ArrayAdapter(
                 requireContext(), R.layout.support_simple_spinner_dropdown_item, it
             )
@@ -89,7 +91,7 @@ class DashboardFragment : Fragment() {
             }
         })
 
-        mainViewModel.state.observe(viewLifecycleOwner, Observer {
+        mainViewModel.state.observe(viewLifecycleOwner, {
             //Update ui status
         })
     }

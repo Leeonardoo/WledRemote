@@ -94,7 +94,7 @@ fun BottomNavigationView.setupWithNavController(
     var isOnFirstFragment = selectedItemTag == firstFragmentTag
 
     // When a navigation item is selected
-    setOnNavigationItemSelectedListener { item ->
+    setOnItemSelectedListener { item ->
         // Don't do anything if the state is state has already been saved.
         if (fragmentManager.isStateSaved) {
             false
@@ -194,7 +194,7 @@ private fun BottomNavigationView.setupItemReselected(
     graphIdToTagMap: SparseArray<String>,
     fragmentManager: FragmentManager
 ) {
-    setOnNavigationItemReselectedListener { item ->
+    setOnItemReselectedListener { item ->
         val newlySelectedItemTag = graphIdToTagMap[item.itemId]
         val selectedFragment = fragmentManager.findFragmentByTag(newlySelectedItemTag)
                 as NavHostFragment

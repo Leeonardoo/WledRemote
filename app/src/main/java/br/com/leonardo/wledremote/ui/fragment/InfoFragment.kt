@@ -21,7 +21,9 @@ import br.com.leonardo.wledremote.rest.api.ResultWrapper
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
 import br.com.leonardo.wledremote.util.convertMillisToDisplay
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class InfoFragment : Fragment() {
 
     private lateinit var binding: FragmentInfoBinding
@@ -32,7 +34,7 @@ class InfoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentInfoBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
@@ -69,9 +71,9 @@ class InfoFragment : Fragment() {
     }
 
     private fun setObservers() {
-        mainViewModel.info.observe(viewLifecycleOwner, Observer { displayInfo(it) })
+        mainViewModel.info.observe(viewLifecycleOwner, { displayInfo(it) })
 
-        mainViewModel.isLoading.observe(viewLifecycleOwner, Observer {
+        mainViewModel.isLoading.observe(viewLifecycleOwner, {
             binding.infoSwipeLayout.isRefreshing = it
         })
     }

@@ -1,5 +1,6 @@
 package br.com.leonardo.wledremote
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 
@@ -11,10 +12,11 @@ class WledApplication : Application() {
     }
 
     companion object {
-        private var context: Context? = null
+        @SuppressLint("StaticFieldLeak")
+        private lateinit var context: Context
 
         fun getAppContext(): Context {
-            return context!!
+            return context
         }
     }
 }

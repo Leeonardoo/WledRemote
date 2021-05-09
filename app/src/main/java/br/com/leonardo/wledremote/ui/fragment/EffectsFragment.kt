@@ -14,7 +14,9 @@ import br.com.leonardo.wledremote.databinding.FragmentEffectsBinding
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.EffectsViewModel
 import com.google.android.material.slider.Slider
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class EffectsFragment : Fragment() {
 
     private lateinit var binding: FragmentEffectsBinding
@@ -24,7 +26,7 @@ class EffectsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentEffectsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -38,14 +40,14 @@ class EffectsFragment : Fragment() {
     }
 
     private fun setObservers() {
-        mainViewModel.effects.observe(viewLifecycleOwner, Observer {
+        mainViewModel.effects.observe(viewLifecycleOwner, {
             binding.effectsRecyclerView.adapter = EffectsAdapter(it) { effect ->
                 mainViewModel.setEffect(it.indexOf(effect))
             }
             binding.effectsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         })
 
-        mainViewModel.isLoading.observe(viewLifecycleOwner, Observer { viewModel.setLoading(it) })
+        mainViewModel.isLoading.observe(viewLifecycleOwner, { viewModel.setLoading(it) })
     }
 
     private fun setListeners() {
