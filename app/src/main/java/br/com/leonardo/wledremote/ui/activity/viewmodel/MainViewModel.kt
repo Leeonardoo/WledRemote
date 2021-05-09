@@ -150,11 +150,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun onPowerClicked() {
+    fun onPowerToggled() {
         if (state.value != null) {
             state.value!!.on?.let {
                 val state = State(on = !it)
                 sendState(state)
+
+                _state.postValue(this.state.value!!.copy(on = state.on))
             }
         }
     }
@@ -180,7 +182,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             newState = State(segments = segments) // Will send updated segments
 
             // This will now make sure that the value is updated with the correct information in
-            // our local device  so that our views can be updated with our local changes
+            // our local device so that our views can be updated with our local changes
             val updatedState = oldState.copy(segments = segments)
             _state.postValue(updatedState)
         }
@@ -194,19 +196,79 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun setPalette(paletteId: Int) {
-        val state = State(segments = listOf(Segment(paletteId = paletteId)))
+        var state = State(segments = listOf(Segment(paletteId = paletteId)))
+        val oldState = this.state.value
+        if (oldState != null) {
+            val segments = oldState.segments?.toMutableList()
+
+            segments?.forEachIndexed {index, segment ->
+                if (segment?.selected == true) {
+                    val updateSegment = segment.copy(paletteId = paletteId)
+                    segments[index] = updateSegment
+                }
+            }
+
+            state = State(segments = segments) // Will send updated segments
+
+            // This will now make sure that the value is updated with the correct information in
+            // our local device so that our views can be updated with our local changes
+            val updatedState = oldState.copy(segments = segments)
+            _state.postValue(updatedState)
+        }
         sendState(state)
     }
 
     fun setEffect(effectId: Int) {
-        val state = State(segments = listOf(Segment(effectId = effectId)))
+        var state = State(segments = listOf(Segment(effectId = effectId)))
+        val oldState = this.state.value
+        if (oldState != null) {
+            val segments = oldState.segments?.toMutableList()
+
+            segments?.forEachIndexed {index, segment ->
+                if (segment?.selected == true) {
+                    val updateSegment = segment.copy(effectId = effectId)
+                    segments[index] = updateSegment
+                }
+            }
+
+            state = State(segments = segments) // Will send updated segments
+
+            // This will now make sure that the value is updated with the correct information in
+            // our local device so that our views can be updated with our local changes
+            val updatedState = oldState.copy(segments = segments)
+            _state.postValue(updatedState)
+        }
         sendState(state)
     }
 
     fun setEffectAttr(intensity: Int? = null, speed: Int? = null) {
-        val state =
-            State(segments = listOf(Segment(effectIntensity = intensity, relativeSpeed = speed)))
+        var state = State(segments = listOf(Segment(effectIntensity = intensity, relativeSpeed = speed)))
+        val oldState = this.state.value
+        if (oldState != null) {
+            val segments = oldState.segments?.toMutableList()
 
+            segments?.forEachIndexed {index, segment ->
+                if (segment?.selected == true) {
+                    var updateSegment: Segment?
+                    if (intensity != null && speed != null) {
+                        updateSegment = segment.copy(effectIntensity = intensity, relativeSpeed = speed)
+                    } else if (intensity != null) {
+                        updateSegment = segment.copy(effectIntensity = intensity)
+                    } else {
+                        updateSegment = segment.copy(relativeSpeed = speed)
+                    }
+                    segments[index] = updateSegment
+                }
+            }
+
+            state = State(segments = segments) // Will send updated segments
+
+            // This will now make sure that the value is updated with the correct information in
+            // our local device so that our views can be updated with our local changes
+            val updatedState = oldState.copy(segments = segments)
+            _state.postValue(updatedState)
+        }
+        sendState(state)
         sendState(state)
     }
 

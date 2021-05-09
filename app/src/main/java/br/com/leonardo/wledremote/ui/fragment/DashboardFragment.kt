@@ -1,6 +1,7 @@
 package br.com.leonardo.wledremote.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import br.com.leonardo.wledremote.model.state.State
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
+import br.com.leonardo.wledremote.util.getFirstSelectedSegment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.slider.Slider
 import com.skydoves.colorpickerview.ColorPickerDialog
@@ -88,8 +90,8 @@ class DashboardFragment : Fragment() {
             if (isChecked && checkedId != -1) {
                 val button = group.findViewById<MaterialButton>(checkedId)
                 val index = group.indexOfChild(button)
-                if (index != -1 && getLastSegment(mainViewModel.state.value) != null) {
-                    val segment = getLastSegment(mainViewModel.state.value)
+                if (index != -1 && getFirstSelectedSegment(mainViewModel.state.value) != null) {
+                    val segment = getFirstSelectedSegment(mainViewModel.state.value)
                     val color = segment!!.colors?.get(index)
                     if (color != null) {
                         val colorInt = parseIntArrayToColorInt(color)
@@ -103,6 +105,10 @@ class DashboardFragment : Fragment() {
     private fun setObservers() {
         mainViewModel.isLoading.observe(viewLifecycleOwner, {
             binding.dashboardSwipeLayout.isRefreshing = it
+            if (it == true) {
+                binding.statusText.text = getString(R.string.dashboard_connecting_to, sharedPrefs.getSavedIP())
+                binding.currentStatus.text = ""
+            }
         })
 
         mainViewModel.palettes.observe(viewLifecycleOwner, {
@@ -118,16 +124,23 @@ class DashboardFragment : Fragment() {
         mainViewModel.state.observe(viewLifecycleOwner, {
             //Update ui status
             if (it.brightness != null) binding.brightnessSlider.value = it.brightness.toFloat()
+            if (it.segments != null) {
+                val segment = getFirstSelectedSegment(it)
+                val palIndex = segment?.paletteId ?: 0
+                val adapter = (binding.paletteDropdownMenu.adapter)
+                if (adapter != null) {
+                    binding.paletteDropdownMenu.setText(adapter.getItem(palIndex) as String, false)
+                }
+            }
             val checkId = binding.buttonToggleGroup.checkedButtonId
             if (checkId != -1) {
                 binding.buttonToggleGroup.clearChecked()
                 binding.buttonToggleGroup.check(checkId)
             }
-        })
-    }
 
-    private fun getLastSegment(state : State?): Segment? {
-        return state?.segments?.last { segment -> segment?.selected == true }
+            binding.statusText.text = getString(R.string.dashboard_connected_to, sharedPrefs.getSavedIP())
+            binding.currentStatus.text = getString(R.string.dashboard_details)
+        })
     }
 
     @ColorInt

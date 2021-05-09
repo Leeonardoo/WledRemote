@@ -13,6 +13,7 @@ import br.com.leonardo.wledremote.adapter.EffectsAdapter
 import br.com.leonardo.wledremote.databinding.FragmentEffectsBinding
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.EffectsViewModel
+import br.com.leonardo.wledremote.util.getFirstSelectedSegment
 import com.google.android.material.slider.Slider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -47,6 +48,15 @@ class EffectsFragment : Fragment() {
             binding.effectsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         })
 
+        mainViewModel.state.observe(viewLifecycleOwner, {
+            val segment = getFirstSelectedSegment(it)
+            if (segment != null) {
+                binding.effectIntensitySlider.value = (segment.effectIntensity ?: 127).toFloat()
+                binding.effectSpeedSlider.value = (segment.relativeSpeed ?: 127).toFloat()
+
+                // TODO: Add icon to selected effect
+            }
+        })
         mainViewModel.isLoading.observe(viewLifecycleOwner, { viewModel.setLoading(it) })
     }
 

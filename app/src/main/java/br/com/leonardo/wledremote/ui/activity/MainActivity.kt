@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_power -> {
-            viewModel.onPowerClicked()
+            viewModel.onPowerToggled()
             true
         }
 
@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         val navGraphIds = listOf(
             R.navigation.bottom_nav_dashboard,
             R.navigation.bottom_nav_effects,
+            R.navigation.bottom_nav_segments,
             R.navigation.bottom_nav_settings
         )
 

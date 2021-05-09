@@ -7,6 +7,9 @@ import com.squareup.moshi.JsonClass
 data class Info(
     val lwip: Int? = null,
 
+    @Json(name = "lip")
+    val lip: String? = null,
+
     @Json(name = "ver")
     val versionName: String? = null,
 
