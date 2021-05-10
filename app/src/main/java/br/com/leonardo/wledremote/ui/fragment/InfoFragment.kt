@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -17,7 +16,6 @@ import br.com.leonardo.wledremote.adapter.InfoAdapter
 import br.com.leonardo.wledremote.databinding.FragmentInfoBinding
 import br.com.leonardo.wledremote.model.info.Info
 import br.com.leonardo.wledremote.model.ui.InfoItem
-import br.com.leonardo.wledremote.rest.api.ResultWrapper
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
 import br.com.leonardo.wledremote.util.convertMillisToDisplay
@@ -82,7 +80,7 @@ class InfoFragment : Fragment() {
         val infos = listOf(
             InfoItem(
                 "Power Usage",
-                R.drawable.power_outline_primary_24dp,
+                R.drawable.power_plug_outline_primary_24dp,
                 "${info.leds?.currentPowerUsage}mA"
             ),
             InfoItem("Uptime", R.drawable.timeline_primary_24dp, "${info.uptime?.let {

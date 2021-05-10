@@ -6,11 +6,23 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Segment(
 
+    @Json(name = "id")
+    val id: Int? = null,
+
+    @Json(name = "on")
+    val on: Boolean? = null,
+
+    @Json(name = "bri")
+    val brightness: Int? = null,
+
     @Json(name = "col")
     val colors: List<List<Int?>?>? = null,
 
     @Json(name = "rev")
     val reverse: Boolean? = null,
+
+    @Json(name = "mi")
+    val mirror: Boolean? = null,
 
     @Json(name = "grp")
     val grp: Int? = null,
@@ -34,13 +46,10 @@ data class Segment(
     val stop: Int? = null,
 
     @Json(name = "len")
-    val lenght: Int? = null,
+    val length: Int? = null,
 
     @Json(name = "pal")
     val paletteId: Int? = null,
-
-    @Json(name = "id")
-    val id: Int? = null,
 
     @Json(name = "sel")
     val selected: Boolean? = null

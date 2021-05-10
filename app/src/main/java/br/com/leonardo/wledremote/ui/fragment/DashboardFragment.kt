@@ -1,7 +1,6 @@
 package br.com.leonardo.wledremote.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.FragmentDashboardBinding
-import br.com.leonardo.wledremote.model.state.Segment
-import br.com.leonardo.wledremote.model.state.State
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
@@ -27,7 +24,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 class DashboardFragment : Fragment() {
-
     private lateinit var binding: FragmentDashboardBinding
     private val viewModel: DashboardViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
@@ -70,7 +66,7 @@ class DashboardFragment : Fragment() {
                     })
                 setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
                 attachAlphaSlideBar(false)
-                attachBrightnessSlideBar(false)
+                attachBrightnessSlideBar(true)
             }.show()
         }
 
