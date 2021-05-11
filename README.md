@@ -9,8 +9,6 @@ Only a handful of things are working for now and there's still a lot of stuff to
 # Credits
 [@Aircoookie](https://github.com/Aircoookie) and everyone behind, for the amazing [WLED](https://github.com/Aircoookie/WLED) project and it's great API
 
-[@airbnb](https://github.com/airbnb) For the Lottie animation library
-
 [@skydoves](https://github.com/skydoves) For the ColorPickerView library
 
 [@square](https://github.com/square) For Retrofit and OKHttp libraries

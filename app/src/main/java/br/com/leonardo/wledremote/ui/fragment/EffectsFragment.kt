@@ -40,14 +40,14 @@ class EffectsFragment : Fragment() {
     }
 
     private fun setObservers() {
-        mainViewModel.effects.observe(viewLifecycleOwner, {
+        mainViewModel.effects.observe(viewLifecycleOwner) {
             binding.effectsRecyclerView.adapter = EffectsAdapter(it) { effect ->
                 mainViewModel.setEffect(it.indexOf(effect))
             }
             binding.effectsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        })
+        }
 
-        mainViewModel.state.observe(viewLifecycleOwner, {
+        mainViewModel.state.observe(viewLifecycleOwner) {
             val segment = getFirstSelectedSegment(it)
             if (segment != null) {
                 binding.effectIntensitySlider.value = (segment.effectIntensity ?: 127).toFloat()
@@ -55,8 +55,8 @@ class EffectsFragment : Fragment() {
 
                 // TODO: Add icon to selected effect
             }
-        })
-        mainViewModel.isLoading.observe(viewLifecycleOwner, { viewModel.setLoading(it) })
+        }
+        mainViewModel.isLoading.observe(viewLifecycleOwner) { viewModel.setLoading(it) }
     }
 
     private fun setListeners() {

@@ -6,11 +6,11 @@ import retrofit2.http.GET
 interface InfoEndpoint {
 
     @GET("/json/info")
-    suspend fun getInfo() : Info
+    suspend fun getInfo(): Info
 
     @GET("/json/effects")
-    suspend fun getEffects() : List<String>
+    suspend fun getEffects(): List<String>
 
     @GET("/json/palettes")
-    suspend fun getPalettes() : List<String>
+    suspend fun getPalettes(): List<String>
 }

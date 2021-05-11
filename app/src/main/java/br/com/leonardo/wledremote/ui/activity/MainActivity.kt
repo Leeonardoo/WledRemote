@@ -14,9 +14,7 @@ import br.com.leonardo.wledremote.databinding.ActivityMainBinding
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.util.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@ExperimentalCoroutinesApi
 class MainActivity : AppCompatActivity() {
 
     private var currentNavController: LiveData<NavController>? = null

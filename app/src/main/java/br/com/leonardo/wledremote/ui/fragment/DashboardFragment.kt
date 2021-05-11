@@ -20,9 +20,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.slider.Slider
 import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@ExperimentalCoroutinesApi
 class DashboardFragment : Fragment() {
     private lateinit var binding: FragmentDashboardBinding
     private val viewModel: DashboardViewModel by viewModels()
@@ -99,15 +97,16 @@ class DashboardFragment : Fragment() {
     }
 
     private fun setObservers() {
-        mainViewModel.isLoading.observe(viewLifecycleOwner, {
+        mainViewModel.isLoading.observe(viewLifecycleOwner) {
             binding.dashboardSwipeLayout.isRefreshing = it
             if (it == true) {
-                binding.statusText.text = getString(R.string.dashboard_connecting_to, sharedPrefs.getSavedIP())
+                binding.statusText.text =
+                    getString(R.string.dashboard_connecting_to, sharedPrefs.getSavedIP())
                 binding.currentStatus.text = ""
             }
-        })
+        }
 
-        mainViewModel.palettes.observe(viewLifecycleOwner, {
+        mainViewModel.palettes.observe(viewLifecycleOwner) {
             val adapter = ArrayAdapter(
                 requireContext(), R.layout.support_simple_spinner_dropdown_item, it
             )
@@ -115,9 +114,9 @@ class DashboardFragment : Fragment() {
             binding.paletteDropdownMenu.setOnItemClickListener { _, _, position, _ ->
                 mainViewModel.setPalette(position)
             }
-        })
+        }
 
-        mainViewModel.state.observe(viewLifecycleOwner, {
+        mainViewModel.state.observe(viewLifecycleOwner) {
             //Update ui status
             if (it.brightness != null) binding.brightnessSlider.value = it.brightness.toFloat()
             if (it.segments != null) {
@@ -134,9 +133,10 @@ class DashboardFragment : Fragment() {
                 binding.buttonToggleGroup.check(checkId)
             }
 
-            binding.statusText.text = getString(R.string.dashboard_connected_to, sharedPrefs.getSavedIP())
+            binding.statusText.text =
+                getString(R.string.dashboard_connected_to, sharedPrefs.getSavedIP())
             binding.currentStatus.text = getString(R.string.dashboard_details)
-        })
+        }
     }
 
     @ColorInt

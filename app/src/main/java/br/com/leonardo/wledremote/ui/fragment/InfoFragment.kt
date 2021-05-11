@@ -69,11 +69,11 @@ class InfoFragment : Fragment() {
     }
 
     private fun setObservers() {
-        mainViewModel.info.observe(viewLifecycleOwner, { displayInfo(it) })
+        mainViewModel.info.observe(viewLifecycleOwner) { displayInfo(it) }
 
-        mainViewModel.isLoading.observe(viewLifecycleOwner, {
+        mainViewModel.isLoading.observe(viewLifecycleOwner) {
             binding.infoSwipeLayout.isRefreshing = it
-        })
+        }
     }
 
     private fun displayInfo(info: Info) {
@@ -83,9 +83,13 @@ class InfoFragment : Fragment() {
                 R.drawable.power_plug_outline_primary_24dp,
                 "${info.leds?.currentPowerUsage}mA"
             ),
-            InfoItem("Uptime", R.drawable.timeline_primary_24dp, "${info.uptime?.let {
-                convertMillisToDisplay(it)
-            }} since last reset")
+            InfoItem(
+                "Uptime", R.drawable.timeline_primary_24dp, "${
+                    info.uptime?.let {
+                        convertMillisToDisplay(it)
+                    }
+                } since last reset"
+            )
         )
 
         adapter.updateList(infos)

@@ -18,7 +18,7 @@ import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
-class SegmentsFragment: Fragment() {
+class SegmentsFragment : Fragment() {
 
     private lateinit var binding: FragmentSegmentsBinding
     private val mainViewModel: MainViewModel by activityViewModels()
@@ -39,14 +39,19 @@ class SegmentsFragment: Fragment() {
 
         binding.segmentItemsRecyclerView.adapter = adapter
         binding.segmentItemsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.segmentItemsRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayout.VERTICAL))
+        binding.segmentItemsRecyclerView.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                LinearLayout.VERTICAL
+            )
+        )
 
         setObservers()
         setListeners()
     }
 
     private fun setObservers() {
-        mainViewModel.state.observe(viewLifecycleOwner, { displaySegments(it) })
+        mainViewModel.state.observe(viewLifecycleOwner) { displaySegments(it) }
     }
 
     private fun setListeners() {

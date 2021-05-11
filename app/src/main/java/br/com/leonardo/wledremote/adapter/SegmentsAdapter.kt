@@ -43,6 +43,7 @@ class SegmentsAdapter : RecyclerView.Adapter<SegmentsAdapter.ViewHolder>() {
     class ViewHolder(val binding: RowSegmentItemBinding) : RecyclerView.ViewHolder(binding.root) {
         private var originalHeight = -1
         private var expandedViewHeigh = -1
+
         @SuppressLint("SetTextI18n")
         fun bind(segment: Segment) {
             binding.segmentSelectedCheckbox.isChecked = segment.selected == true
@@ -68,7 +69,13 @@ class SegmentsAdapter : RecyclerView.Adapter<SegmentsAdapter.ViewHolder>() {
                 }
             }
 
-            binding.segmentContainer.setOnClickListener { animateHeightChanged(it, binding.expandedView, binding.expandedView.isVisible) }
+            binding.segmentContainer.setOnClickListener {
+                animateHeightChanged(
+                    it,
+                    binding.expandedView,
+                    binding.expandedView.isVisible
+                )
+            }
             binding.executePendingBindings()
         }
 
@@ -99,7 +106,10 @@ class SegmentsAdapter : RecyclerView.Adapter<SegmentsAdapter.ViewHolder>() {
         }
     }
 
-    inner class DiffCallback(private var oldList: List<Segment>, private var newList: List<Segment>) : DiffUtil.Callback() {
+    inner class DiffCallback(
+        private var oldList: List<Segment>,
+        private var newList: List<Segment>
+    ) : DiffUtil.Callback() {
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             oldList[oldItemPosition] == newList[newItemPosition]

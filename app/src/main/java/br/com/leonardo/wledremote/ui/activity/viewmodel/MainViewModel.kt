@@ -16,12 +16,10 @@ import br.com.leonardo.wledremote.repository.StateRepository
 import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
 import br.com.leonardo.wledremote.util.ActionLiveData
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@ExperimentalCoroutinesApi
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val stateRepository = StateRepository()
     private val infoRepository = InfoRepository()
@@ -67,7 +65,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 is LocalResultWrapper.Loading -> {
                 }
 
-                is LocalResultWrapper.Success -> _info.postValue(it.value!!)
+                is LocalResultWrapper.Success -> it.value.let { newInfo ->
+                    _info.postValue(newInfo)
+                }
 
                 is LocalResultWrapper.NetworkError -> {
 
@@ -90,7 +90,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 is LocalResultWrapper.Loading -> {
                 }
 
-                is LocalResultWrapper.Success -> _state.postValue(it.value!!)
+                is LocalResultWrapper.Success -> it.value.let { newState ->
+                    _state.postValue(newState)
+                }
 
                 is LocalResultWrapper.NetworkError -> {
 
@@ -112,7 +114,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 is LocalResultWrapper.Loading -> {
                 }
 
-                is LocalResultWrapper.Success -> _effects.postValue(it.value!!)
+                is LocalResultWrapper.Success -> it.value.let { newEffects ->
+                    _effects.postValue(newEffects)
+                }
 
                 is LocalResultWrapper.NetworkError -> {
 
@@ -135,7 +139,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 is LocalResultWrapper.Loading -> {
                 }
 
-                is LocalResultWrapper.Success -> _palettes.postValue(it.value!!)
+                is LocalResultWrapper.Success -> it.value.let { newPalettes ->
+                    _palettes.postValue(newPalettes)
+                }
 
                 is LocalResultWrapper.NetworkError -> {
 
@@ -152,11 +158,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun onPowerToggled() {
         if (state.value != null) {
-            state.value!!.on?.let {
+            state.value?.on?.let {
                 val state = State(on = !it)
                 sendState(state)
 
-                _state.postValue(this.state.value!!.copy(on = state.on))
+                _state.postValue(this.state.value?.copy(on = state.on))
             }
         }
     }
@@ -166,11 +172,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
         // Update the color based on the index from the last segment that is selected
         val oldState = state.value
-        var newState = State(segments = listOf(Segment(colors = listOf(rgbColor)))) // In case the default one was not set
+        var newState =
+            State(segments = listOf(Segment(colors = listOf(rgbColor)))) // In case the default one was not set
         if (oldState != null) {
             val segments = oldState.segments?.toMutableList()
 
-            segments?.forEachIndexed {index, segment ->
+            segments?.forEachIndexed { index, segment ->
                 if (segment?.selected == true) {
                     val colors = segment.colors?.toMutableList()
                     colors?.set(colorIndex, rgbColor)
@@ -201,7 +208,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         if (oldState != null) {
             val segments = oldState.segments?.toMutableList()
 
-            segments?.forEachIndexed {index, segment ->
+            segments?.forEachIndexed { index, segment ->
                 if (segment?.selected == true) {
                     val updateSegment = segment.copy(paletteId = paletteId)
                     segments[index] = updateSegment
@@ -224,7 +231,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         if (oldState != null) {
             val segments = oldState.segments?.toMutableList()
 
-            segments?.forEachIndexed {index, segment ->
+            segments?.forEachIndexed { index, segment ->
                 if (segment?.selected == true) {
                     val updateSegment = segment.copy(effectId = effectId)
                     segments[index] = updateSegment
@@ -242,20 +249,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun setEffectAttr(intensity: Int? = null, speed: Int? = null) {
-        var state = State(segments = listOf(Segment(effectIntensity = intensity, relativeSpeed = speed)))
+        var state =
+            State(segments = listOf(Segment(effectIntensity = intensity, relativeSpeed = speed)))
         val oldState = this.state.value
         if (oldState != null) {
             val segments = oldState.segments?.toMutableList()
 
-            segments?.forEachIndexed {index, segment ->
+            segments?.forEachIndexed { index, segment ->
                 if (segment?.selected == true) {
-                    var updateSegment: Segment?
-                    if (intensity != null && speed != null) {
-                        updateSegment = segment.copy(effectIntensity = intensity, relativeSpeed = speed)
+                    val updateSegment: Segment = if (intensity != null && speed != null) {
+                        segment.copy(effectIntensity = intensity, relativeSpeed = speed)
                     } else if (intensity != null) {
-                        updateSegment = segment.copy(effectIntensity = intensity)
+                        segment.copy(effectIntensity = intensity)
                     } else {
-                        updateSegment = segment.copy(relativeSpeed = speed)
+                        segment.copy(relativeSpeed = speed)
                     }
                     segments[index] = updateSegment
                 }

@@ -5,15 +5,12 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import br.com.leonardo.wledremote.R
 import br.com.leonardo.wledremote.databinding.ActivitySetupBinding
 import br.com.leonardo.wledremote.ui.activity.viewmodel.SetupViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
 import br.com.leonardo.wledremote.util.WledDialogUtil
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@ExperimentalCoroutinesApi
 class SetupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySetupBinding

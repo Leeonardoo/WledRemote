@@ -9,14 +9,12 @@ import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
 import br.com.leonardo.wledremote.rest.api.ResultWrapper
 import br.com.leonardo.wledremote.rest.api.RetrofitConn
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
 
-@ExperimentalCoroutinesApi
 class StateRepository {
     private val apiHandler = ApiHandler()
     private val tag = ::InfoRepository.name
