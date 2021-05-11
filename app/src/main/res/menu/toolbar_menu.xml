@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_power"
-        android:icon="@drawable/power_black_24dp"
+        android:icon="@drawable/power_checkbox_state"
         android:title="@string/power"
         app:showAsAction="always" />
 

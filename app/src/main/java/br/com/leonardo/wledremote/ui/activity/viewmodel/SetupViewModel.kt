@@ -12,10 +12,12 @@ import br.com.leonardo.wledremote.repository.InfoRepository
 import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
 import br.com.leonardo.wledremote.util.ActionLiveData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@ExperimentalCoroutinesApi
 class SetupViewModel(application: Application) : AndroidViewModel(application) {
     private val infoRepository = InfoRepository()
 
@@ -37,7 +39,7 @@ class SetupViewModel(application: Application) : AndroidViewModel(application) {
                     is LocalResultWrapper.Loading -> {
                     }
 
-                    is LocalResultWrapper.Success -> _info.postValue(it.value)
+                    is LocalResultWrapper.Success -> _info.postValue(it.value!!)
 
                     is LocalResultWrapper.GenericError -> withContext(Dispatchers.Main) {
                         _infoError.sendAction(

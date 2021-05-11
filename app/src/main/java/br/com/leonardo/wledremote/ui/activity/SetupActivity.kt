@@ -11,7 +11,9 @@ import br.com.leonardo.wledremote.databinding.ActivitySetupBinding
 import br.com.leonardo.wledremote.ui.activity.viewmodel.SetupViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
 import br.com.leonardo.wledremote.util.WledDialogUtil
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class SetupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySetupBinding
@@ -42,11 +44,11 @@ class SetupActivity : AppCompatActivity() {
     }
 
     private fun setObservers() {
-        viewModel.info.observe(this, Observer {
+        viewModel.info.observe(this, {
             sharedPrefs.setIsIPConfigured(true)
             navigateToMain()
         })
-        viewModel.infoError.observe(this, Observer { showError(it) })
+        viewModel.infoError.observe(this, { showError(it) })
     }
 
     private fun navigateToMain() {

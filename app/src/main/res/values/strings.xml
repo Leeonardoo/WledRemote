@@ -9,6 +9,7 @@
     <string name="info_fragment_label">Device Info</string>
     <string name="settings_label">Settings</string>
     <string name="effects_label">Effects</string>
+    <string name="segments_label">Segments</string>
     <string name="power">Power</string>
 
     <!-- DashboardFragment -->
@@ -17,6 +18,7 @@
     <string name="select_color">Choose a new color</string>
     <string name="dashboard_details">Touch for details</string>
     <string name="dashboard_connected_to">Connected to: %s</string>
+    <string name="dashboard_connecting_to">Connecting to: %s</string>
     <string name="brightness_percent">%s%</string>
     <string name="brightness">Brightness</string>
     <string name="choose_a_palette">Choose a palette</string>
@@ -35,6 +37,21 @@
     <string name="intensity">Intensity</string>
     <string name="effects_network_error">Network error while trying to get effects</string>
     <string name="effects_unknown_error">Unknown error while trying to get effects</string>
+
+    <!-- SegmentsFragment -->
+    <string name="add_segment">Add Segment</string>
+    <string name="segments">Segments</string>
+    <string name="segments_segment">Segment %s</string>
+    <string name="segment_network_error">Network error while trying to get device segment</string>
+    <string name="segment_generic_error">Unknown error while trying to get device segment</string>
+    <string name="send_segment_network_error">An network error has occurred while trying to send new device segment</string>
+    <string name="send_segment_generic_error">An unknown error has occurred while trying to send new device segment</string>
+    <string name="start_leds_label">Start LEDs</string>
+    <string name="end_leds_label">End LEDs</string>
+    <string name="grouping_label">Grouping</string>
+    <string name="spacing_label">Spacing</string>
+    <string name="reverse_direction_label">Reverse direction</string>
+    <string name="mirror_effect_label">Mirror effect</string>
 
     <!-- InfoFragment -->
     <string name="info_network_error">Network error while trying to get device info</string>

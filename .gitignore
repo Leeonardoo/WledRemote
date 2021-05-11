@@ -42,8 +42,6 @@ captures/
 .idea/tasks.xml
 .idea/gradle.xml
 .idea/assetWizardSettings.xml
-.idea/markdown-navigator-enh.xml
-.idea/markdown-navigator.xml
 .idea/dictionaries
 .idea/libraries
 # Android Studio 3 in .gitignore file.
@@ -85,3 +83,6 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+# Android Profiling
+*.hprof

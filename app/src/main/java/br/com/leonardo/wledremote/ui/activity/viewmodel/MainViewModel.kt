@@ -16,10 +16,12 @@ import br.com.leonardo.wledremote.repository.StateRepository
 import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
 import br.com.leonardo.wledremote.util.ActionLiveData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@ExperimentalCoroutinesApi
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val stateRepository = StateRepository()
     private val infoRepository = InfoRepository()
@@ -65,7 +67,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 is LocalResultWrapper.Loading -> {
                 }
 
-                is LocalResultWrapper.Success -> _info.postValue(it.value)
+                is LocalResultWrapper.Success -> _info.postValue(it.value!!)
 
                 is LocalResultWrapper.NetworkError -> {
 
@@ -88,9 +90,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 is LocalResultWrapper.Loading -> {
                 }
 
-                is LocalResultWrapper.Success -> {
-
-                }
+                is LocalResultWrapper.Success -> _state.postValue(it.value!!)
 
                 is LocalResultWrapper.NetworkError -> {
 
@@ -112,9 +112,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 is LocalResultWrapper.Loading -> {
                 }
 
-                is LocalResultWrapper.Success -> {
-                    _effects.postValue(it.value)
-                }
+                is LocalResultWrapper.Success -> _effects.postValue(it.value!!)
 
                 is LocalResultWrapper.NetworkError -> {
 
@@ -129,7 +127,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getPalettes() = viewModelScope.launch {
+    private fun getPalettes() = viewModelScope.launch {
         infoRepository.getPalettes().collect {
             isPalettesLoading = it == LocalResultWrapper.Loading
 
@@ -137,9 +135,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 is LocalResultWrapper.Loading -> {
                 }
 
-                is LocalResultWrapper.Success -> {
-                    _palettes.postValue(it.value)
-                }
+                is LocalResultWrapper.Success -> _palettes.postValue(it.value!!)
 
                 is LocalResultWrapper.NetworkError -> {
 
@@ -154,20 +150,44 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun onPowerClicked() {
+    fun onPowerToggled() {
         if (state.value != null) {
             state.value!!.on?.let {
                 val state = State(on = !it)
                 sendState(state)
+
+                _state.postValue(this.state.value!!.copy(on = state.on))
             }
         }
     }
 
-    fun setColor(colorArray: Int) {
-        val rgbColor = mutableListOf(colorArray.red, colorArray.green, colorArray.blue)
-        //Hardcoded for the first one for now
-        val state = State(segments = listOf(Segment(colors = listOf(rgbColor))))
-        sendState(state)
+    fun setColor(colorInt: Int, colorIndex: Int) {
+        val rgbColor = mutableListOf(colorInt.red, colorInt.green, colorInt.blue)
+
+        // Update the color based on the index from the last segment that is selected
+        val oldState = state.value
+        var newState = State(segments = listOf(Segment(colors = listOf(rgbColor)))) // In case the default one was not set
+        if (oldState != null) {
+            val segments = oldState.segments?.toMutableList()
+
+            segments?.forEachIndexed {index, segment ->
+                if (segment?.selected == true) {
+                    val colors = segment.colors?.toMutableList()
+                    colors?.set(colorIndex, rgbColor)
+                    val updateSegment = segment.copy(colors = colors)
+                    segments[index] = updateSegment
+                }
+            }
+
+            newState = State(segments = segments) // Will send updated segments
+
+            // This will now make sure that the value is updated with the correct information in
+            // our local device so that our views can be updated with our local changes
+            val updatedState = oldState.copy(segments = segments)
+            _state.postValue(updatedState)
+        }
+
+        sendState(newState)
     }
 
     fun setBrightness(brightness: Int) {
@@ -176,19 +196,79 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun setPalette(paletteId: Int) {
-        val state = State(segments = listOf(Segment(paletteId = paletteId)))
+        var state = State(segments = listOf(Segment(paletteId = paletteId)))
+        val oldState = this.state.value
+        if (oldState != null) {
+            val segments = oldState.segments?.toMutableList()
+
+            segments?.forEachIndexed {index, segment ->
+                if (segment?.selected == true) {
+                    val updateSegment = segment.copy(paletteId = paletteId)
+                    segments[index] = updateSegment
+                }
+            }
+
+            state = State(segments = segments) // Will send updated segments
+
+            // This will now make sure that the value is updated with the correct information in
+            // our local device so that our views can be updated with our local changes
+            val updatedState = oldState.copy(segments = segments)
+            _state.postValue(updatedState)
+        }
         sendState(state)
     }
 
     fun setEffect(effectId: Int) {
-        val state = State(segments = listOf(Segment(effectId = effectId)))
+        var state = State(segments = listOf(Segment(effectId = effectId)))
+        val oldState = this.state.value
+        if (oldState != null) {
+            val segments = oldState.segments?.toMutableList()
+
+            segments?.forEachIndexed {index, segment ->
+                if (segment?.selected == true) {
+                    val updateSegment = segment.copy(effectId = effectId)
+                    segments[index] = updateSegment
+                }
+            }
+
+            state = State(segments = segments) // Will send updated segments
+
+            // This will now make sure that the value is updated with the correct information in
+            // our local device so that our views can be updated with our local changes
+            val updatedState = oldState.copy(segments = segments)
+            _state.postValue(updatedState)
+        }
         sendState(state)
     }
 
     fun setEffectAttr(intensity: Int? = null, speed: Int? = null) {
-        val state =
-            State(segments = listOf(Segment(effectIntensity = intensity, relativeSpeed = speed)))
+        var state = State(segments = listOf(Segment(effectIntensity = intensity, relativeSpeed = speed)))
+        val oldState = this.state.value
+        if (oldState != null) {
+            val segments = oldState.segments?.toMutableList()
 
+            segments?.forEachIndexed {index, segment ->
+                if (segment?.selected == true) {
+                    var updateSegment: Segment?
+                    if (intensity != null && speed != null) {
+                        updateSegment = segment.copy(effectIntensity = intensity, relativeSpeed = speed)
+                    } else if (intensity != null) {
+                        updateSegment = segment.copy(effectIntensity = intensity)
+                    } else {
+                        updateSegment = segment.copy(relativeSpeed = speed)
+                    }
+                    segments[index] = updateSegment
+                }
+            }
+
+            state = State(segments = segments) // Will send updated segments
+
+            // This will now make sure that the value is updated with the correct information in
+            // our local device so that our views can be updated with our local changes
+            val updatedState = oldState.copy(segments = segments)
+            _state.postValue(updatedState)
+        }
+        sendState(state)
         sendState(state)
     }
 

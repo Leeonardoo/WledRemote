@@ -34,5 +34,6 @@ data class State(
     @Json(name = "nl")
     val nightLight: NightLight? = null,
 
+    @Json(name = "on")
     val on: Boolean? = null
 )
