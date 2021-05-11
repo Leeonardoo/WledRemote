@@ -47,15 +47,14 @@
                     android:id="@+id/segment_items_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:background="@android:color/white"
                     android:elevation="0dp"
-                    android:layout_marginTop="16dp"
                     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/segment_title"
-                    tools:listitem="@layout/row_segment_item"
-                    />
+                    tools:listitem="@layout/row_segment_item" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add_segment_button"

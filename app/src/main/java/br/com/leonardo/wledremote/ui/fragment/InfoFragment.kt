@@ -19,9 +19,9 @@ import br.com.leonardo.wledremote.model.ui.InfoItem
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.DashboardViewModel
 import br.com.leonardo.wledremote.util.convertMillisToDisplay
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import dagger.hilt.android.AndroidEntryPoint
 
-@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class InfoFragment : Fragment() {
 
     private lateinit var binding: FragmentInfoBinding

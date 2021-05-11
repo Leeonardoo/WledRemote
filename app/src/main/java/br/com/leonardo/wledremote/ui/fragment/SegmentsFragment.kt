@@ -15,9 +15,9 @@ import br.com.leonardo.wledremote.adapter.SegmentsAdapter
 import br.com.leonardo.wledremote.databinding.FragmentSegmentsBinding
 import br.com.leonardo.wledremote.model.state.State
 import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import dagger.hilt.android.AndroidEntryPoint
 
-@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class SegmentsFragment : Fragment() {
 
     private lateinit var binding: FragmentSegmentsBinding

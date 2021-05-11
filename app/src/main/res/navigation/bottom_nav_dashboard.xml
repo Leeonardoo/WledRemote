@@ -9,7 +9,7 @@
         android:id="@+id/dashboardFragment"
         android:name="br.com.leonardo.wledremote.ui.fragment.DashboardFragment"
         android:label="@string/dashboard_label"
-        tools:layout="@layout/fragment_dashboard" >
+        tools:layout="@layout/fragment_dashboard">
         <action
             android:id="@+id/action_dashboardFragment_to_infoFragment"
             app:destination="@id/infoFragment" />

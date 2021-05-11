@@ -1,12 +1,11 @@
 package br.com.leonardo.wledremote.ui.activity.viewmodel
 
-import android.app.Application
 import androidx.core.graphics.blue
 import androidx.core.graphics.green
 import androidx.core.graphics.red
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.leonardo.wledremote.model.info.Info
 import br.com.leonardo.wledremote.model.state.Segment
@@ -15,12 +14,16 @@ import br.com.leonardo.wledremote.repository.InfoRepository
 import br.com.leonardo.wledremote.repository.StateRepository
 import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
 import br.com.leonardo.wledremote.util.ActionLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class MainViewModel @Inject constructor() : ViewModel() {
+
     private val stateRepository = StateRepository()
     private val infoRepository = InfoRepository()
 

@@ -1,9 +1,16 @@
 package br.com.leonardo.wledremote.ui.fragment.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.content.Context
+import androidx.lifecycle.ViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class DashboardViewModel(application: Application) : AndroidViewModel(application) {
-    private val sharedPrefsUtil = SharedPrefsUtil.getInstance(application)
+@HiltViewModel
+class DashboardViewModel @Inject constructor(
+    @ApplicationContext private val appContext: Context
+) : ViewModel() {
+
+    private val sharedPrefsUtil = SharedPrefsUtil.getInstance(appContext)
 }

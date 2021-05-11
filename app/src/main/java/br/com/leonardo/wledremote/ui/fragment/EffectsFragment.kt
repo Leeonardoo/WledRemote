@@ -14,9 +14,9 @@ import br.com.leonardo.wledremote.ui.activity.viewmodel.MainViewModel
 import br.com.leonardo.wledremote.ui.fragment.viewmodel.EffectsViewModel
 import br.com.leonardo.wledremote.util.getFirstSelectedSegment
 import com.google.android.material.slider.Slider
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import dagger.hilt.android.AndroidEntryPoint
 
-@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class EffectsFragment : Fragment() {
 
     private lateinit var binding: FragmentEffectsBinding

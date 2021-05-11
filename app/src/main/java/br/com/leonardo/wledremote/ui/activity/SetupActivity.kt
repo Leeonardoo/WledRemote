@@ -10,7 +10,9 @@ import br.com.leonardo.wledremote.databinding.ActivitySetupBinding
 import br.com.leonardo.wledremote.ui.activity.viewmodel.SetupViewModel
 import br.com.leonardo.wledremote.util.SharedPrefsUtil
 import br.com.leonardo.wledremote.util.WledDialogUtil
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SetupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySetupBinding

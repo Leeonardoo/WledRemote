@@ -1,22 +1,27 @@
 package br.com.leonardo.wledremote.ui.activity.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.leonardo.wledremote.R
-import br.com.leonardo.wledremote.WledApplication
 import br.com.leonardo.wledremote.model.info.Info
 import br.com.leonardo.wledremote.repository.InfoRepository
 import br.com.leonardo.wledremote.rest.api.LocalResultWrapper
 import br.com.leonardo.wledremote.util.ActionLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class SetupViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class SetupViewModel @Inject constructor(
+    @ApplicationContext private val appContext: Context
+) : ViewModel() {
     private val infoRepository = InfoRepository()
 
     private val _info = MutableLiveData<Info>()
@@ -43,15 +48,13 @@ class SetupViewModel(application: Application) : AndroidViewModel(application) {
 
                     is LocalResultWrapper.GenericError -> withContext(Dispatchers.Main) {
                         _infoError.sendAction(
-                            WledApplication.getAppContext()
-                                .getString(R.string.info_setup_unknown_error)
+                            appContext.getString(R.string.info_setup_unknown_error)
                         )
                     }
 
                     is LocalResultWrapper.NetworkError -> withContext(Dispatchers.Main) {
                         _infoError.sendAction(
-                            WledApplication.getAppContext()
-                                .getString(R.string.info_setup_network_error)
+                            appContext.getString(R.string.info_setup_network_error)
                         )
                     }
                 }
